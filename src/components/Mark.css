@@ -1,4 +1,4 @@
-.sudoku-mark {
+.sudoku-marks {
     width: 50px;
     height: 50px;
     border: 1px solid #c3c3c3;
@@ -8,8 +8,27 @@
     vertical-align: middle;
 }
 
-.sudoku-mark span {
+.sudoku-marks-container {
+    line-height: normal;
+    cursor: default;
+}
+
+.sudoku-marks span {
     display: inline-block;
     width: 15px;
     height: 15px;
+}
+
+.sudoku-marks-container .sudoku-mark-deselected {
+    color: lightgray;
+    visibility: hidden;
+}
+
+.sudoku-marks-container:hover .sudoku-mark-deselected {
+    visibility: visible;
+}
+
+.sudoku-marks-container:hover .sudoku-mark-deselected:hover {
+    color: dimgray;
+    visibility: visible;
 }

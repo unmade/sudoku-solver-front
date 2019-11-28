@@ -1,16 +1,21 @@
 import React from 'react';
 import Cell from './Cell';
-import Mark from './Mark';
+import MarkContainer from '../containers/MarkContainer';
+import "./Grid.css";
 
 
 const Grid = ({ sudoku }) => (
-    <table style={{margin: "0 auto", borderSpacing: "0px", borderCollapse: "collapse" }}>
+    <table className="sudoku">
         <tbody>
             {sudoku.map((row, i) => {
                 return (
                     <tr>
-                        {row.map((value, j) => {
-                            return (value) ? <Cell value={value}/> : <Mark marks={[1, 2, 4, 8, 9]}/>
+                        {row.map((item, j) => {
+                            return (item.type === "cell") ? (
+                                <Cell value={item.value}/>
+                            ) : (
+                                <MarkContainer row={i} col={j}/>
+                            )
                         })}
                     </tr>
                 )

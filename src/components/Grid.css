@@ -1,0 +1,14 @@
+.sudoku {
+    margin: 0 auto;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border: 3px solid #444444;
+}
+
+.sudoku tr td:nth-child(3n) {
+    border-right: 3px solid #444444;
+}
+
+.sudoku tr:nth-child(3n) {
+    border-bottom: 3px solid #444444;
+}
