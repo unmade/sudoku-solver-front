@@ -1,13 +1,17 @@
-import React from "react";
+import React from 'react';
+import Mark from "./Mark";
+import SingleValue from "./SingleValue";
 import "./Cell.css";
-import {TextInput} from "grommet";
 
 
-const Cell = ({ row, col, value, updateCell }) => (
+const Cell = ({ row, col, item, updateCell, toggleMark }) => (
     <td className="sudoku-cell">
-        <TextInput type="text" maxLength={1} value={value} onChange={updateCell({ row, col })}/>
+        {(item.type === "mark" || item.value === "") ? (
+            <Mark row={row} col={col} marks={item.value} toggleMark={toggleMark}/>
+        ) : (
+            <SingleValue row={row} col={col} value={item.value} updateCell={updateCell} />
+        )}
     </td>
-);
-
+)
 
 export default Cell;

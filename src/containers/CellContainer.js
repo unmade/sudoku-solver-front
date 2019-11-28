@@ -1,25 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateCell } from '../actions/sudoku/actions';
+import { updateCell, toggleMark } from '../actions/sudoku/actions';
 import Cell from "../components/Cell";
 
 
 const mapStateToProps = (state, ownProps) => ({
     row: ownProps.row,
     col: ownProps.col,
-    value: state.sudoku.sudoku[ownProps.row][ownProps.col].value,
+    item: state.sudoku.sudoku[ownProps.row][ownProps.col],
 })
 
 
 const mapDispatchToProps = dispatch => ({
     updateCell: ({ row, col }) => event => (dispatch(updateCell({ row, col, value: event.target.value }))),
+    toggleMark: ({ row, col, value }) => () => (dispatch(toggleMark({ row, col, value }))),
 });
 
 
-const MarkContainer = connect(
+const CellContainer = connect(
     mapStateToProps,
     mapDispatchToProps,
   )(Cell);
   
 
-  export default MarkContainer;
+  export default CellContainer;
