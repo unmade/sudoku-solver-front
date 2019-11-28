@@ -1,4 +1,4 @@
-import { TOGGLE_MARK } from "./actions";
+import { TOGGLE_MARK, UPDATE_CELL } from "./actions";
 
 const INITIAL_STATE = {
     sudoku: [
@@ -107,17 +107,27 @@ const INITIAL_STATE = {
 
 export const SudokuReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        case UPDATE_CELL:
+            var { row, col, value } = action.payload;
+            if (value === "" || value && value >= 1 && value <= 9) {
+                var { sudoku } = state;
+                sudoku[row][col].value = value;
+                return {
+                    sudoku: sudoku,
+                };
+            };
+            return state;
         case TOGGLE_MARK:
-            const { row, col, value } = action.payload;
-            const { sudoku } = state;
+            var { row, col, value } = action.payload;
+            var { sudoku } = state;
             if (sudoku[row][col].value.indexOf(value) < 0) {
                 sudoku[row][col].value = [value, ...sudoku[row][col].value]
             } else {
-                sudoku[row][col].value = sudoku[row][col].value.filter((e) => { return e != value })
+                sudoku[row][col].value = sudoku[row][col].value.filter((e) => { return e !== value })
             }
             return {
-                sudoku: sudoku
-            }
+                sudoku: sudoku,
+            };
         default:
             return state;
     }

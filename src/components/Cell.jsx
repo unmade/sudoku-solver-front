@@ -3,10 +3,9 @@ import "./Cell.css";
 import {TextInput} from "grommet";
 
 
-const Cell = ({ value }) => (
+const Cell = ({ row, col, value, updateCell }) => (
     <td className="sudoku-cell">
-        {/* <TextInput value={value}/> */}
-        {value || <span>&nbsp;</span>}
+        <TextInput type="text" maxLength={1} value={value} onChange={updateCell({ row, col })}/>
     </td>
 );
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Cell from './Cell';
+import CellContainer from '../containers/CellContainer';
 import MarkContainer from '../containers/MarkContainer';
 import "./Grid.css";
 
@@ -12,7 +12,7 @@ const Grid = ({ sudoku }) => (
                     <tr>
                         {row.map((item, j) => {
                             return (item.type === "cell") ? (
-                                <Cell value={item.value}/>
+                                <CellContainer row={i} col={j}/>
                             ) : (
                                 <MarkContainer row={i} col={j}/>
                             )
