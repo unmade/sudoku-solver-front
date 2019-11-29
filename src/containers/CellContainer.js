@@ -12,8 +12,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 
 const mapDispatchToProps = dispatch => ({
-    updateCell: ({ row, col }) => event => (dispatch(updateCell({ row, col, value: event.target.value }))),
-    toggleMark: ({ row, col, value }) => () => (dispatch(toggleMark({ row, col, value }))),
+    updateCell: ({ row, col, value, keyCode }) => dispatch(updateCell({ row, col, value, keyCode })),
+    toggleMark: ({ row, col, value }) => dispatch(toggleMark({ row, col, value })),
 });
 
 

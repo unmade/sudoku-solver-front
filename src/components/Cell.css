@@ -2,7 +2,21 @@
     width: 50px;
     height: 50px;
     border: 1px solid #c3c3c3;
-    font-size: 24px;
     text-align: center;
     vertical-align: middle;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.sudoku-cell-container {
+    height: 50px;
+}
+
+.sudoku-cell-container:focus {
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: 0 0 3px 3px #6FFFB0;
+    border-radius: 4px;
 }

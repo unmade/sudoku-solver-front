@@ -1,11 +1,10 @@
 import React from "react";
-import {TextInput} from "grommet";
 import "./SingleValue.css";
 
 
-const SingleValue = ({ row, col, value, updateCell }) => (
+const SingleValue = ({ value }) => (
     <div className="sudoku-single-value">
-        <TextInput type="text" maxLength={1} value={value} onChange={updateCell({ row, col })}/>
+        <div>{value}</div>
     </div>
 );
 

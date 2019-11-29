@@ -1,12 +1,9 @@
 .sudoku-marks-container {
+    height: 100%;
     font-size: 12px;
     color: dimgray;
     line-height: normal;
     cursor: default;
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -khtml-user-select: none; /* webkit (konqueror) browsers */
-    -ms-user-select: none; /* IE10+ */
 }
 
 .sudoku-marks-container span {
@@ -20,11 +17,11 @@
     visibility: hidden;
 }
 
-.sudoku-marks-container:hover .sudoku-mark-deselected {
+.sudoku-cell-container:focus .sudoku-mark-deselected {
     visibility: visible;
 }
 
-.sudoku-marks-container:hover .sudoku-mark-deselected:hover {
-    color: dimgray;
+.sudoku-cell-container:focus .sudoku-mark-deselected:hover {
+    color: #a5a5a5;
     visibility: visible;
 }

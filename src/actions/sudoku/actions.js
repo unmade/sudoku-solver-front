@@ -14,14 +14,14 @@ export function toggleMark({ row, col, value }) {
 }
 
 
-export function updateCell(props) {
-  const {row, col, value} = props
+export function updateCell({row, col, value, keyCode}) {
   return {
     type: UPDATE_CELL,
     payload: {
       row,
       col,
       value,
+      keyCode,
     },
   };
 }

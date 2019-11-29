@@ -108,16 +108,23 @@ const INITIAL_STATE = {
 export const SudokuReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case UPDATE_CELL:
-            var { row, col, value } = action.payload;
+            var { row, col, value, keyCode } = action.payload;
+            console.log({ row, col, value, keyCode })
             var { sudoku } = state;
+            if (keyCode === 8) {
+                sudoku[row][col] = {type: "mark", value: []}
+                return {
+                    sudoku: sudoku,
+                };
+            };
             if (value === "") {
                 sudoku[row][col] = {type: "mark", value: []}
                 return {
                     sudoku: sudoku,
                 };
-            }
-            if (value === "" || value && value >= 1 && value <= 9) {
-                sudoku[row][col].value = value;
+            };
+            if (value && value >= 1 && value <= 9) {
+                sudoku[row][col] = {type: "cell", value: value};
                 return {
                     sudoku: sudoku,
                 };
