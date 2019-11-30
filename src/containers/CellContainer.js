@@ -7,7 +7,7 @@ import Cell from "../components/Cell";
 const mapStateToProps = (state, ownProps) => ({
     row: ownProps.row,
     col: ownProps.col,
-    item: state.sudoku.sudoku[ownProps.row][ownProps.col],
+    item: state.sudoku.sudoku.puzzle[ownProps.row][ownProps.col],
 })
 
 

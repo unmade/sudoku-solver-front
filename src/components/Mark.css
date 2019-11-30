@@ -25,3 +25,8 @@
     color: #a5a5a5;
     visibility: visible;
 }
+
+.sudoku-marks-container .sudoku-mark-removed {
+    color: #FF4040;
+    text-decoration: line-through;
+}
