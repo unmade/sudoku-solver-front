@@ -1,4 +1,4 @@
-import { TOGGLE_MARK, UPDATE_CELL } from "./actions";
+import { TOGGLE_MARK, UPDATE_CELL, NEXT_STEP, SELECT_CELL } from "./actions";
 
 
 class Sudoku {
@@ -6,15 +6,60 @@ class Sudoku {
         this.puzzle = puzzle;
     }
 
+    selectCells(positions) {
+        this.clearStep();
+        this.clearSelection();
+        positions.map(position => {
+            const [row, col] = position
+            this.puzzle[row][col] = {...this.puzzle[row][col], isSelected: true};
+            const intersection = this.getIntersectedCellsFor(this.puzzle[row][col]);
+            intersection.map(cell => {
+                this.puzzle[cell.position[0]][cell.position[1]] = {...cell, isIntersected: true};
+            })
+        })
+    }
+
+    isIntersected(cell_a, cell_b) {
+        return (
+            cell_a.position[0] === cell_b.position[0]
+            || cell_a.position[1] === cell_b.position[1]
+            || cell_a.position[2] === cell_b.position[2]
+        )
+    }
+
+    getIntersectedCellsFor(cell) {
+        const result = []
+        this.puzzle.map(row => {
+            row.map(item => {
+                if (cell != item && this.isIntersected(cell, item)) {
+                    result.push(item)
+                }
+            })
+        })
+        return result
+    }
+
+    clearSelection() {
+        this.puzzle.map((row, i) => (
+            row.map((cell, j) => {
+                if (cell.isSelected || cell.isIntersected) {
+                    this.puzzle[i][j] = {...this.puzzle[i][j], isSelected: false, isIntersected: false};
+                }
+            })
+        ))
+    }
+
     updateCell(row, col, value) {
-        this.puzzle[row][col] = {type: "cell", value: value}
+        this.puzzle[row][col] = {...this.puzzle[row][col], type: "cell", value: value}
     }
 
     updateMark(row, col, value) {
-        this.puzzle[row][col] = {type: "mark", value: value}
+        this.puzzle[row][col] = {...this.puzzle[row][col], type: "mark", value: value}
     }
 
     applyStep(step) {
+        this.clearSelection();
+        this.selectCells(step.combination.marks.map(item => (item.position)))
         step.changed_cells.map((cell) => {
             const oldCell = this.puzzle[cell.position[0]][cell.position[1]];
             cell.removed = []
@@ -25,8 +70,18 @@ class Sudoku {
                     }
                 })
             }
-            this.puzzle[cell.position[0]][cell.position[1]] = cell
+            this.puzzle[cell.position[0]][cell.position[1]] = {...oldCell, ...cell}
         })
+    }
+
+    clearStep() {
+        this.puzzle.map((row, i) => (
+            row.map((cell, j) => {
+                if (cell.removed) {
+                    this.puzzle[i][j] = {...this.puzzle[i][j], removed: []}
+                }
+            })
+        ))
     }
 }
 
@@ -157,7 +212,28 @@ const INITIAL_STATE = {
                 {"type": "mark", "position": [5, 0, 3], "value": [2, 3, 7]},
                 {"type": "mark", "position": [1, 4, 1], "value": [8, 4, 7]},
             ],
-        }
+        },
+        {
+            "combination": {
+                "name": "Lone Single",
+                "marks": [
+                    {
+                        "type": "mark",
+                        "position": [2, 0, 0],
+                        "value": [3],
+                    },
+                ],
+                values: [3],
+            },
+            "changed_cells": [
+                {"type": "cell", "position": [2, 0, 0], "value": 3},
+                {"type": "mark", "position": [0, 1, 0], "value": [8, 2, 4, 6]},
+                {"type": "mark", "position": [2, 1, 0], "value": [9, 4, 6]},
+                {"type": "mark", "position": [0, 0, 0], "value": [2]},
+                {"type": "mark", "position": [2, 3, 1], "value": [4, 6]},
+                {"type": "mark", "position": [5, 0, 3], "value": [2, 7]},
+            ],
+        },
     ],
     nextStep: 0,
 };
@@ -167,7 +243,9 @@ export const SudokuReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case UPDATE_CELL:
             var { row, col, value, keyCode } = action.payload;
+            console.log({ row, col, value, keyCode });
             var { sudoku } = state;
+            console.log(sudoku);
             if (keyCode === 8 || value === "") {  // backspace
                 sudoku.updateMark(row, col, [])
             };
@@ -175,6 +253,7 @@ export const SudokuReducer = (state = INITIAL_STATE, action) => {
                 sudoku.updateCell(row, col, value)
             };
             return {
+                ...state,
                 sudoku: sudoku,
             };
         case TOGGLE_MARK:
@@ -186,8 +265,28 @@ export const SudokuReducer = (state = INITIAL_STATE, action) => {
                 sudoku.updateMark(row, col, sudoku.puzzle[row][col].value.filter((e) => { return e !== value }))
             }
             return {
+                ...state,
                 sudoku: sudoku,
             };
+        case NEXT_STEP:
+            var { sudoku, steps, nextStep } = state;
+            if (nextStep < steps.length) {
+                sudoku.applyStep(steps[nextStep])
+                return {
+                    ...state,
+                    sudoku: sudoku,
+                    nextStep: nextStep + 1,
+                }
+            }
+            return state
+        case SELECT_CELL:
+            var { row, col } = action.payload;
+            var { sudoku } = state;
+            sudoku.selectCells([[row, col]])
+            return {
+                ...state,
+                sudoku: sudoku,
+            }
         default:
             return state;
     }

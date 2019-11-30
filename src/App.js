@@ -1,7 +1,7 @@
 import React from 'react';
-import { grommet, Box, Button, Grid, Grommet, Heading, Text } from 'grommet';
-import { Erase, Info, Redo, Undo } from "grommet-icons";
+import { grommet, Box, Grid, Grommet } from 'grommet';
 import SudokuGrid from './containers/SudokuGrid';
+import SudokuControls from './containers/SudokuControls';
 
 function App() {
   return (
@@ -21,20 +21,7 @@ function App() {
 
         <Box gridArea="sudoku" fill="vertical" justify="center" align="center">
             <SudokuGrid />
-            <Box direction="row" pad="small" gap="medium" align="center">
-              <Box round="full" overflow="hidden" background="brand">
-                <Button icon={<Undo />} hoverIndicator/>
-              </Box>
-              <Box round="full" overflow="hidden" background="brand">
-                <Button icon={<Redo />} hoverIndicator/>
-              </Box>
-              <Box round="full" overflow="hidden" background="brand">
-                <Button icon={<Erase />} hoverIndicator/>
-              </Box>
-              <Box round="full" overflow="hidden" background="brand">
-                <Button icon={<Info />} hoverIndicator/>
-              </Box>
-            </Box>
+            <SudokuControls />
         </Box>
 
       </Grid>

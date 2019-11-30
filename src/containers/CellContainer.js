@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateCell, toggleMark } from '../actions/sudoku/actions';
+import { selectCell, updateCell, toggleMark } from '../actions/sudoku/actions';
 import Cell from "../components/Cell";
 
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 
 const mapDispatchToProps = dispatch => ({
+    selectCell: ({row, col}) => dispatch(selectCell({ row, col })),
     updateCell: ({ row, col, value, keyCode }) => dispatch(updateCell({ row, col, value, keyCode })),
     toggleMark: ({ row, col, value }) => dispatch(toggleMark({ row, col, value })),
 });

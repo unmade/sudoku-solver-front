@@ -13,7 +13,7 @@
 }
 
 .sudoku-marks-container .sudoku-mark-deselected {
-    color: lightgray;
+    color: #bbb;
     visibility: hidden;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .sudoku-cell-container:focus .sudoku-mark-deselected:hover {
-    color: #a5a5a5;
+    color: #999;
     visibility: visible;
 }
 
