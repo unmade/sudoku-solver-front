@@ -3,15 +3,15 @@ import { nextStep } from '../actions/sudoku/actions';
 import SudokuControls from '../components/SudokuControls';
 
 
-const mapDispatchToProps = dispatch => ({
-    nextStep: () => dispatch(nextStep()),
+const mapDispatchToProps = (dispatch) => ({
+  nextStep: () => dispatch(nextStep()),
 });
 
 
 const SudokuControlsContainer = connect(
-    null,
-    mapDispatchToProps,
+  null,
+  mapDispatchToProps,
 )(SudokuControls);
-  
+
 
 export default SudokuControlsContainer;

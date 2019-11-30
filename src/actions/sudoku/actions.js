@@ -8,9 +8,9 @@ export function toggleMark({ row, col, value }) {
   return {
     type: TOGGLE_MARK,
     payload: {
-        row,
-        col, 
-        value,
+      row,
+      col,
+      value,
     },
   };
 }
@@ -22,12 +22,12 @@ export function selectCell({ row, col }) {
     payload: {
       row,
       col,
-    }
-  }
+    },
+  };
 }
 
 
-export function updateCell({row, col, value, keyCode}) {
+export function updateCell({ row, col, value, keyCode }) {
   return {
     type: UPDATE_CELL,
     payload: {
@@ -44,5 +44,5 @@ export function nextStep() {
   return {
     type: NEXT_STEP,
     payload: null,
-  }
+  };
 }

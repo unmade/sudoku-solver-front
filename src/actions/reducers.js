@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { SudokuReducer } from './sudoku/reducers';
+import SudokuReducer from './sudoku/reducers';
 
 
 const reducers = combineReducers({
-    sudoku: SudokuReducer,
+  sudoku: SudokuReducer,
 });
 
 

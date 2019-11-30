@@ -1,7 +1,10 @@
 import React from 'react';
-import { grommet, Box, Grid, Grommet } from 'grommet';
+import {
+  grommet, Box, Grid, Grommet,
+} from 'grommet';
 import SudokuGrid from './containers/SudokuGrid';
 import SudokuControls from './containers/SudokuControls';
+
 
 function App() {
   return (
@@ -16,12 +19,11 @@ function App() {
           { name: 'sudoku', start: [0, 1], end: [1, 1] },
         ]}
       >
-        <Box gridArea="header" direction="row" align="center" justify="center">
-        </Box>
+        <Box gridArea="header" direction="row" align="center" justify="center" />
 
         <Box gridArea="sudoku" fill="vertical" justify="center" align="center">
-            <SudokuGrid />
-            <SudokuControls />
+          <SudokuGrid />
+          <SudokuControls />
         </Box>
 
       </Grid>
