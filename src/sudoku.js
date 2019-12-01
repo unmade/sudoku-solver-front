@@ -7,9 +7,36 @@ function isIntersected(cellA, cellB) {
 }
 
 
+function getSquareNum(row, col) {
+  return Math.floor(row / 3) * 3 + Math.floor(col / 3);
+}
+
+
+function emptySudoku(n, m) {
+  const sudoku = [];
+  ([...Array(n).keys()]).forEach((i) => {
+    const row = [];
+    ([...Array(m).keys()]).forEach((j) => {
+      row.push({ type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] });
+    });
+    sudoku.push(row);
+  });
+  return sudoku;
+}
+
+
 class Sudoku {
   constructor(puzzle) {
-    this.puzzle = puzzle;
+    if (puzzle) {
+      this.puzzle = puzzle.map((row, i) => (
+        row.map((cell, j) => (
+          (cell) ? { type: 'cell', position: [i, j,getSquareNum(i, j)], value: cell } : { type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] }
+        ))
+      ));
+      // this.puzzle = puzzle;
+    } else {
+      this.puzzle = emptySudoku(9, 9);
+    }
   }
 
   selectCells(positions) {
