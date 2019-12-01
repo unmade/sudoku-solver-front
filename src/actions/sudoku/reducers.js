@@ -1,6 +1,6 @@
 import Sudoku from '../../sudoku';
 import {
-  TOGGLE_MARK, UPDATE_CELL, NEXT_STEP, SELECT_CELL,
+  TOGGLE_MARK, SET_CELL_SINGLE_VALUE, NEXT_STEP, SELECT_CELL, CLEAR_CELL, CLEAR_SELECTION,
 } from './actions';
 
 
@@ -159,15 +159,36 @@ const INITIAL_STATE = {
 
 const SudokuReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_CELL: {
+    case SET_CELL_SINGLE_VALUE: {
       const { row, col, value } = action.payload;
       const { sudoku } = state;
-      if (action.payload.keyCode === 8 || value === '') {
-        sudoku.updateMark(row, col, []);
-      }
-      if (value && value >= 1 && value <= 9) {
-        sudoku.updateCell(row, col, value);
-      }
+      sudoku.setCellSingleValue(row, col, value);
+      return {
+        ...state,
+        sudoku,
+      };
+    }
+    case SELECT_CELL: {
+      const { row, col } = action.payload;
+      const { sudoku } = state;
+      sudoku.selectCells([[row, col]]);
+      return {
+        ...state,
+        sudoku,
+      };
+    }
+    case CLEAR_CELL: {
+      const { row, col } = action.payload;
+      const { sudoku } = state;
+      sudoku.clearCell(row, col);
+      return {
+        ...state,
+        sudoku,
+      };
+    }
+    case CLEAR_SELECTION: {
+      const { sudoku } = state;
+      sudoku.clearSelection();
       return {
         ...state,
         sudoku,
@@ -176,11 +197,7 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
     case TOGGLE_MARK: {
       const { row, col, value } = action.payload;
       const { sudoku } = state;
-      if (sudoku.puzzle[row][col].value.indexOf(value) < 0) {
-        sudoku.updateMark(row, col, [value, ...sudoku.puzzle[row][col].value]);
-      } else {
-        sudoku.updateMark(row, col, sudoku.puzzle[row][col].value.filter((e) => (e !== value)));
-      }
+      sudoku.toggleMarkValue(row, col, value);
       return {
         ...state,
         sudoku,
@@ -197,15 +214,6 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         };
       }
       return state;
-    }
-    case SELECT_CELL: {
-      const { row, col } = action.payload;
-      const { sudoku } = state;
-      sudoku.selectCells([[row, col]]);
-      return {
-        ...state,
-        sudoku,
-      };
     }
     default:
       return state;

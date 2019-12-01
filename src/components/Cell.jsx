@@ -7,33 +7,33 @@ import './Cell.css';
 
 
 const Cell = ({
-  row, col, item, selectCell, updateCell, toggleMark,
-}) => (
-  <td className={
-    `sudoku-cell ${(item.isSelected ? 'sudoku-cell-selected' : ' ') + (item.isIntersected ? 'sudoku-cell-intersected' : ' ')}`
-  }
-  >
-    <div
-      className="sudoku-cell-container"
-      tabIndex="0"
-      onFocus={() => selectCell({ row, col })}
-      onKeyUp={(event) => updateCell({
-        row, col, value: event.key, keyCode: event.keyCode,
-      })}
-    >
-      {(item.type === 'mark' || item.value === '') ? (
-        <Mark
-          row={row}
-          col={col}
-          marks={item.value}
-          removed={item.removed}
-          toggleMark={toggleMark}
-        />
-      ) : (
-        <SingleValue value={item.value} />
-      )}
-    </div>
-  </td>
-);
+  row, col, item, toggleMark, onKeyUp, onFocus, onBlur,
+}) => {
+  const className = (item.isSelected ? 'sudoku-cell-selected' : ' ') + (item.isIntersected ? 'sudoku-cell-intersected' : ' ');
+
+  return (
+    <td className={`sudoku-cell ${className}`}>
+      <div
+        tabIndex="0"
+        className="sudoku-cell-container"
+        onFocus={onFocus({ row, col })}
+        onBlur={onBlur}
+        onKeyUp={onKeyUp({ row, col })}
+      >
+        {(item.type === 'mark') ? (
+          <Mark
+            row={row}
+            col={col}
+            marks={item.value}
+            removed={item.removed}
+            toggleMark={toggleMark}
+          />
+        ) : (
+          <SingleValue value={item.value} />
+        )}
+      </div>
+    </td>
+  );
+};
 
 export default Cell;

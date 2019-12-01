@@ -1,7 +1,9 @@
 export const TOGGLE_MARK = 'TOGGLE_MARK';
 export const SELECT_CELL = 'SELECT_CELL';
-export const UPDATE_CELL = 'UPDATE_CELL';
+export const CLEAR_CELL = 'CLEAR_CELL';
+export const SET_CELL_SINGLE_VALUE = 'SET_CELL_SINGLE_VALUE';
 export const NEXT_STEP = 'NEXT_STEP';
+export const CLEAR_SELECTION = 'CLEAR_SELECTION';
 
 
 export function toggleMark({ row, col, value }) {
@@ -27,15 +29,33 @@ export function selectCell({ row, col }) {
 }
 
 
-export function updateCell({ row, col, value, keyCode }) {
+export function clearCell({ row, col }) {
   return {
-    type: UPDATE_CELL,
+    type: CLEAR_CELL,
+    payload: {
+      row,
+      col,
+    },
+  };
+}
+
+
+export function setCellSingleValue({ row, col, value }) {
+  return {
+    type: SET_CELL_SINGLE_VALUE,
     payload: {
       row,
       col,
       value,
-      keyCode,
     },
+  };
+}
+
+
+export function clearSelection() {
+  return {
+    type: CLEAR_SELECTION,
+    payload: null,
   };
 }
 

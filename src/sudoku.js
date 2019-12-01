@@ -47,12 +47,24 @@ class Sudoku {
     ));
   }
 
-  updateCell(row, col, value) {
+  clearCell(row, col) {
+    this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'mark', value: [] };
+  }
+
+  setCellSingleValue(row, col, value) {
     this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'cell', value };
   }
 
   updateMark(row, col, value) {
     this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'mark', value };
+  }
+
+  toggleMarkValue(row, col, value) {
+    if (this.puzzle[row][col].value.indexOf(value) < 0) {
+      this.updateMark(row, col, [value, ...this.puzzle[row][col].value]);
+    } else {
+      this.updateMark(row, col, this.puzzle[row][col].value.filter((e) => (e !== value)));
+    }
   }
 
   applyStep(step) {
