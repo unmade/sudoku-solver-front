@@ -6,12 +6,18 @@ export const RETRIEVE_SUDOKU_REQUEST = 'RETRIEVE_SUDOKU_REQUEST';
 export const RETRIEVE_SUDOKU_SUCCESS = 'RETRIEVE_SUDOKU_SUCCESS';
 export const RETRIEVE_SUDOKU_FAILURE = 'RETRIEVE_SUDOKU_FAILURE';
 
+const RETRIEVE_HINT = 'RETRIEVE_HINT';
+export const RETRIEVE_HINT_REQUEST = 'RETRIEVE_HINT_REQUEST';
+export const RETRIEVE_HINT_SUCCESS = 'RETRIEVE_HINT_SUCCESS';
+export const RETRIEVE_HINT_FAILURE = 'RETRIEVE_HINT_FAILURE';
+
+
 export const SELECT_CELL = 'SELECT_CELL';
 export const CLEAR_SELECTION = 'CLEAR_SELECTION';
 export const SET_CELL_SINGLE_VALUE = 'SET_CELL_SINGLE_VALUE';
 export const CLEAR_CELL = 'CLEAR_CELL';
 export const TOGGLE_MARK = 'TOGGLE_MARK';
-export const NEXT_STEP = 'NEXT_STEP';
+export const APPLY_HINT = 'APPLY_HINT';
 
 
 function retrieveSudokuRequest() {
@@ -57,6 +63,64 @@ function* retrieveSudokuSaga() {
     yield put(retrieveSudokuSuccess(data));
   } catch (e) {
     yield put(retrieveSudokuFailure(e));
+  }
+}
+
+
+function retrieveHintRequest() {
+  return {
+    type: RETRIEVE_HINT_REQUEST,
+    payload: null,
+  };
+}
+
+
+function retrieveHintSuccess(hint) {
+  return {
+    type: RETRIEVE_HINT_SUCCESS,
+    payload: hint,
+  };
+}
+
+
+function retrieveHintFailure(error) {
+  return {
+    type: RETRIEVE_HINT_FAILURE,
+    payload: error,
+  };
+}
+
+
+export function retrieveHint({ puzzle }) {
+  return {
+    type: RETRIEVE_HINT,
+    payload: {
+      puzzle,
+    },
+  };
+}
+
+
+function* retrieveHintSaga({ payload }) {
+  const { puzzle } = payload;
+  const url = `${API_BASE_URL}/hints`;
+  const options = {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ puzzle }),
+
+  };
+  yield put(retrieveHintRequest());
+
+  try {
+    const response = yield fetch(url, options);
+    const data = yield response.json();
+    yield put(retrieveHintSuccess(data));
+  } catch (e) {
+    yield put(retrieveHintFailure(e));
   }
 }
 
@@ -115,14 +179,17 @@ export function toggleMark({ row, col, value }) {
 }
 
 
-export function nextStep() {
+export function applyHint({ hint }) {
   return {
-    type: NEXT_STEP,
-    payload: null,
+    type: APPLY_HINT,
+    payload: {
+      hint,
+    },
   };
 }
 
 
 export const sudokuSagas = [
   takeEvery(RETRIEVE_SUDOKU, retrieveSudokuSaga),
+  takeEvery(RETRIEVE_HINT, retrieveHintSaga),
 ];

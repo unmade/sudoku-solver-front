@@ -1,9 +1,10 @@
 import Sudoku from '../../sudoku';
 import {
+  APPLY_HINT,
   CLEAR_CELL,
   CLEAR_SELECTION,
-  NEXT_STEP,
   SET_CELL_SINGLE_VALUE,
+  RETRIEVE_HINT_SUCCESS,
   RETRIEVE_SUDOKU_SUCCESS,
   SELECT_CELL,
   TOGGLE_MARK,
@@ -12,6 +13,7 @@ import {
 
 const INITIAL_STATE = {
   sudoku: new Sudoku(),
+  hint: null,
   steps: [],
   nextStep: 0,
 };
@@ -71,17 +73,20 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         sudoku,
       };
     }
-    case NEXT_STEP: {
-      const { sudoku, steps, nextStep } = state;
-      if (nextStep < steps.length) {
-        sudoku.applyStep(steps[nextStep]);
-        return {
-          ...state,
-          sudoku,
-          nextStep: nextStep + 1,
-        };
-      }
-      return state;
+    case APPLY_HINT: {
+      const { hint } = action.payload;
+      const { sudoku } = state;
+      sudoku.applyHint(hint);
+      return {
+        ...state,
+        sudoku,
+      };
+    }
+    case RETRIEVE_HINT_SUCCESS: {
+      return {
+        ...state,
+        hint: action.payload,
+      };
     }
     default:
       return state;

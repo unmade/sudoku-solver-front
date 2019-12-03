@@ -30,10 +30,13 @@ class Sudoku {
     if (puzzle) {
       this.puzzle = puzzle.map((row, i) => (
         row.map((cell, j) => (
-          (cell) ? { type: 'cell', position: [i, j,getSquareNum(i, j)], value: cell } : { type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] }
+          (cell) ? (
+            { type: 'cell', position: [i, j, getSquareNum(i, j)], value: cell }
+          ) : (
+            { type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] }
+          )
         ))
       ));
-      // this.puzzle = puzzle;
     } else {
       this.puzzle = emptySudoku(9, 9);
     }
@@ -94,13 +97,13 @@ class Sudoku {
     }
   }
 
-  applyStep(step) {
-    this.selectCells(step.combination.marks.map((item) => (item.position)));
-    step.changed_cells.forEach((cell) => {
+  applyHint(hint) {
+    this.selectCells(hint.combination.marks.map((item) => (item.position)));
+    hint.changed_cells.forEach((cell) => {
       const oldCell = this.puzzle[cell.position[0]][cell.position[1]];
       const removed = [];
       if (cell.type === 'mark') {
-        step.combination.values.forEach((value) => {
+        hint.combination.values.forEach((value) => {
           if (oldCell.value.indexOf(value) > -1) {
             removed.push(value);
           }

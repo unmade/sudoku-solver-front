@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Button } from 'grommet';
 import {
-  Erase, Info, Redo, Undo,
+  Erase, Redo, Undo,
 } from 'grommet-icons';
+import HintButton from '../containers/HintButton';
 
 
-const SudokuControls = ({ nextStep }) => (
+const SudokuControls = () => (
   <Box>
     <Box direction="row" pad="small" gap="medium" align="center">
       <Box round="full" overflow="hidden" background="brand">
@@ -18,7 +19,7 @@ const SudokuControls = ({ nextStep }) => (
         <Button icon={<Erase />} hoverIndicator />
       </Box>
       <Box round="full" overflow="hidden" background="brand">
-        <Button icon={<Info />} hoverIndicator onClick={nextStep} />
+        <HintButton />
       </Box>
     </Box>
   </Box>

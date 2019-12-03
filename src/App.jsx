@@ -4,7 +4,7 @@ import {
   grommet, Box, Grid, Grommet,
 } from 'grommet';
 import SudokuGrid from './containers/SudokuGrid';
-import SudokuControls from './containers/SudokuControls';
+import SudokuControls from './components/SudokuControls';
 import { retrieveSudoku } from './actions/sudoku/actions';
 
 
