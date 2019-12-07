@@ -10,42 +10,67 @@ const layerMargin = {
 };
 
 
-const HintButton = ({ sudoku, hint, applyHint, retrieveHint }) => {
-  const [open, setOpen] = React.useState();
-  const onOpen = () => {
-    retrieveHint({ puzzle: sudoku.puzzle });
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
-  const onReveal = () => {
+class HintButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    };
+  }
+
+  onOpen() {
+    const { sudoku, retrieveHint } = this.props;
+    retrieveHint({ puzzle: sudoku });
+    this.setState({
+      open: true,
+    });
+  }
+
+  onClose() {
+    this.setState({
+      open: false,
+    });
+  }
+
+  onReveal() {
+    const { hint, applyHint } = this.props;
     applyHint({ hint });
-    setOpen(false);
-  };
-  const shouldOpen = !!hint && open;
-  return (
-    <Box>
-      <Button
-        icon={<Info />}
-        hoverIndicator
-        open={shouldOpen}
-        onClick={onOpen}
-      />
-      {hint && open && (
-        <Layer
-          position="top-right"
-          modal={false}
-          responsive={false}
-          margin={layerMargin}
-          onEsc={onClose}
-        >
-          <HintModal hint={hint} onReveal={onReveal} onClose={onClose} />
-        </Layer>
-      )}
-    </Box>
-  );
-};
+    this.setState({
+      open: false,
+    });
+  }
+
+  render() {
+    const { hint } = this.props;
+    const { open } = this.state;
+    const shouldOpen = !!hint && open;
+    return (
+      <Box>
+        <Button
+          icon={<Info />}
+          hoverIndicator
+          open={shouldOpen}
+          onClick={() => this.onOpen()}
+        />
+        {shouldOpen && (
+          <Layer
+            position="top-right"
+            modal={false}
+            responsive={false}
+            margin={layerMargin}
+            onEsc={() => this.onClose()}
+          >
+            <HintModal
+              hint={hint}
+              onReveal={() => this.onReveal()}
+              onClose={() => this.onClose()}
+            />
+          </Layer>
+        )}
+      </Box>
+    );
+  }
+}
 
 
 export default HintButton;

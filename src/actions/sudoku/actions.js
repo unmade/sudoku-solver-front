@@ -11,11 +11,6 @@ export const RETRIEVE_HINT_REQUEST = 'RETRIEVE_HINT_REQUEST';
 export const RETRIEVE_HINT_SUCCESS = 'RETRIEVE_HINT_SUCCESS';
 export const RETRIEVE_HINT_FAILURE = 'RETRIEVE_HINT_FAILURE';
 
-export const SELECT_CELL = 'SELECT_CELL';
-export const CLEAR_SELECTION = 'CLEAR_SELECTION';
-export const SET_CELL_SINGLE_VALUE = 'SET_CELL_SINGLE_VALUE';
-export const CLEAR_CELL = 'CLEAR_CELL';
-export const TOGGLE_MARK = 'TOGGLE_MARK';
 export const APPLY_HINT = 'APPLY_HINT';
 
 
@@ -93,12 +88,11 @@ function retrieveHintFailure(error) {
 }
 
 
-export function retrieveHint({ puzzle, slug }) {
+export function retrieveHint({ puzzle }) {
   return {
     type: RETRIEVE_HINT,
     payload: {
       puzzle,
-      slug,
     },
   };
 }
@@ -106,18 +100,6 @@ export function retrieveHint({ puzzle, slug }) {
 
 function* retrieveHintSaga({ payload }) {
   const { puzzle } = payload;
-  const cells = [];
-  const marks = [];
-  puzzle.forEach((row) => (
-    row.forEach((cell) => {
-      if (cell.type === 'mark') {
-        marks.push(cell);
-      }
-      if (cell.type === 'cell') {
-        cells.push(cell);
-      }
-    })
-  ));
   const url = `${API_BASE_URL}/hints`;
   const options = {
     method: 'POST',
@@ -125,7 +107,10 @@ function* retrieveHintSaga({ payload }) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ cells, marks }),
+    body: JSON.stringify({
+      cells: Object.values(puzzle).filter((cell) => cell.type === 'cell'),
+      marks: Object.values(puzzle).filter((cell) => cell.type === 'mark'),
+    }),
   };
   yield put(retrieveHintRequest());
 
@@ -136,60 +121,6 @@ function* retrieveHintSaga({ payload }) {
   } catch (e) {
     yield put(retrieveHintFailure(e));
   }
-}
-
-
-export function selectCell({ row, col }) {
-  return {
-    type: SELECT_CELL,
-    payload: {
-      row,
-      col,
-    },
-  };
-}
-
-
-export function clearSelection() {
-  return {
-    type: CLEAR_SELECTION,
-    payload: null,
-  };
-}
-
-
-export function setCellSingleValue({ row, col, value }) {
-  return {
-    type: SET_CELL_SINGLE_VALUE,
-    payload: {
-      row,
-      col,
-      value,
-    },
-  };
-}
-
-
-export function clearCell({ row, col }) {
-  return {
-    type: CLEAR_CELL,
-    payload: {
-      row,
-      col,
-    },
-  };
-}
-
-
-export function toggleMark({ row, col, value }) {
-  return {
-    type: TOGGLE_MARK,
-    payload: {
-      row,
-      col,
-      value,
-    },
-  };
 }
 
 

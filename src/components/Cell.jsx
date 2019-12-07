@@ -6,38 +6,46 @@ import SingleValue from './SingleValue';
 import './Cell.css';
 
 
-const Cell = ({
-  row, col, item, toggleMark, onKeyUp, onFocus, onBlur,
-}) => {
-  const className = (
-    (item.isSelected ? ' sudoku-cell-selected' : '')
-    + (item.isIntersected && !item.isSelected ? ' sudoku-cell-intersected' : '')
-    + (item.incorrect ? ' sudoku-cell-incorrect' : '')
-  );
+class Cell extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const { item } = this.props;
+    return item !== nextProps.item;
+  }
 
-  return (
-    <td className={`sudoku-cell ${className}`}>
-      <div
-        tabIndex="0"
-        className="sudoku-cell-container"
-        onFocus={onFocus({ row, col })}
-        onBlur={onBlur}
-        onKeyUp={onKeyUp({ row, col })}
-      >
-        {(item.type === 'mark') ? (
-          <Mark
-            row={row}
-            col={col}
-            marks={item.value}
-            removed={item.removed}
-            toggleMark={toggleMark}
-          />
-        ) : (
-          <SingleValue value={item.value} />
-        )}
-      </div>
-    </td>
-  );
-};
+  render() {
+    const {
+      item, onKeyUp, onFocus, onBlur, onMarkClick,
+    } = this.props;
+
+    const className = (
+      (item.isSelected ? ' sudoku-cell-selected' : '')
+      + (item.isIntersected && !item.isSelected ? ' sudoku-cell-intersected' : '')
+      + (item.incorrect ? ' sudoku-cell-incorrect' : '')
+    );
+
+    return (
+      <td className={`sudoku-cell ${className}`}>
+        <div
+          tabIndex="0"
+          className="sudoku-cell-container"
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyUp={onKeyUp}
+        >
+          {(item.type === 'mark') ? (
+            <Mark
+              marks={item.value}
+              removed={item.removed}
+              onMarkClick={onMarkClick}
+            />
+          ) : (
+            <SingleValue value={item.value} />
+          )}
+        </div>
+      </td>
+    );
+  }
+}
+
 
 export default Cell;

@@ -4,9 +4,7 @@ import React from 'react';
 import './Mark.css';
 
 
-const Mark = ({
-  row, col, marks, removed, toggleMark,
-}) => (
+const Mark = ({ marks, removed, onMarkClick }) => (
   <div className="sudoku-marks-container">
     {[...Array(3).keys()].map((i) => (
       <div key={i}>
@@ -18,7 +16,7 @@ const Mark = ({
           const className = marks.indexOf(value) > -1 ? 'sudoku-mark-selected' : 'sudoku-mark-deselected';
           return (
             <span
-              onClick={() => toggleMark({ row, col, value })}
+              onClick={() => onMarkClick(value)}
               className={className}
               key={j}
             >

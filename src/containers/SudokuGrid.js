@@ -3,7 +3,7 @@ import Grid from '../components/Grid';
 
 
 const mapStateToProps = (state) => ({
-  sudoku: state.sudoku.sudoku.puzzle,
+  sudoku: state.sudoku.sudoku,
 });
 
 

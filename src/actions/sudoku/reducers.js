@@ -1,94 +1,40 @@
-import Sudoku from '../../sudoku';
+import { parseSudoku, emptySudoku, applyHint } from '../../sudoku';
 import {
   APPLY_HINT,
-  CLEAR_CELL,
-  CLEAR_SELECTION,
-  SET_CELL_SINGLE_VALUE,
   RETRIEVE_HINT_SUCCESS,
   RETRIEVE_SUDOKU_SUCCESS,
-  SELECT_CELL,
-  TOGGLE_MARK,
 } from './actions';
 
 
 const INITIAL_STATE = {
-  sudoku: new Sudoku(),
+  sudoku: emptySudoku(9, 9),
   hint: null,
-  steps: [],
-  nextStep: 0,
 };
 
 
 const SudokuReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case RETRIEVE_SUDOKU_SUCCESS: {
-      const { puzzle, solution } = action.payload;
+      const { puzzle } = action.payload;
       return {
         ...state,
-        sudoku: new Sudoku(puzzle, solution),
+        sudoku: parseSudoku(puzzle),
       };
     }
-    case SELECT_CELL: {
-      const { row, col } = action.payload;
+    case RETRIEVE_HINT_SUCCESS: {
       const { sudoku } = state;
-      sudoku.selectCells([[row, col]]);
       return {
         ...state,
         sudoku,
-      };
-    }
-    case CLEAR_SELECTION: {
-      const { sudoku } = state;
-      sudoku.clearSelection();
-      return {
-        ...state,
-        sudoku,
-      };
-    }
-    case SET_CELL_SINGLE_VALUE: {
-      const { row, col, value } = action.payload;
-      const { sudoku } = state;
-      sudoku.setCellSingleValue(row, col, value);
-      return {
-        ...state,
-        sudoku,
-      };
-    }
-
-    case CLEAR_CELL: {
-      const { row, col } = action.payload;
-      const { sudoku } = state;
-      sudoku.clearCell(row, col);
-      return {
-        ...state,
-        sudoku,
-      };
-    }
-    case TOGGLE_MARK: {
-      const { row, col, value } = action.payload;
-      const { sudoku } = state;
-      sudoku.toggleMarkValue(row, col, value);
-      return {
-        ...state,
-        sudoku,
+        hint: action.payload,
       };
     }
     case APPLY_HINT: {
       const { hint } = action.payload;
       const { sudoku } = state;
-      sudoku.applyHint(hint);
       return {
         ...state,
-        sudoku,
-      };
-    }
-    case RETRIEVE_HINT_SUCCESS: {
-      const { sudoku } = state;
-      sudoku.selectCells(action.payload.combination.marks.map((cell) => [cell.position[0], cell.position[1]]));
-      return {
-        ...state,
-        sudoku,
-        hint: action.payload,
+        sudoku: applyHint(sudoku, hint),
       };
     }
     default:

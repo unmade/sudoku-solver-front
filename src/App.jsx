@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  grommet, Box, Grid, Grommet,
+  grommet, Box, Grid as GrommetGrid, Grommet,
 } from 'grommet';
 import SudokuGrid from './containers/SudokuGrid';
 import SudokuControls from './components/SudokuControls';
@@ -17,7 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <Grommet theme={grommet} full>
-        <Grid
+        <GrommetGrid
           fill
           gap="small"
           rows={['auto', 'flex']}
@@ -34,7 +34,7 @@ class App extends React.Component {
             <SudokuControls />
           </Box>
 
-        </Grid>
+        </GrommetGrid>
       </Grommet>
     );
   }
