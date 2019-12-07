@@ -9,7 +9,11 @@ import './Cell.css';
 const Cell = ({
   row, col, item, toggleMark, onKeyUp, onFocus, onBlur,
 }) => {
-  const className = (item.isSelected ? 'sudoku-cell-selected' : ' ') + (item.isIntersected ? 'sudoku-cell-intersected' : ' ');
+  const className = (
+    (item.isSelected ? ' sudoku-cell-selected' : '')
+    + (item.isIntersected && !item.isSelected ? ' sudoku-cell-intersected' : '')
+    + (item.incorrect ? ' sudoku-cell-incorrect' : '')
+  );
 
   return (
     <td className={`sudoku-cell ${className}`}>

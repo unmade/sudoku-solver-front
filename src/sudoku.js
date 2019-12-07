@@ -26,7 +26,8 @@ function emptySudoku(n, m) {
 
 
 class Sudoku {
-  constructor(puzzle) {
+  constructor(puzzle, solution) {
+    this.solution = solution;
     if (puzzle) {
       this.puzzle = puzzle.map((row, i) => (
         row.map((cell, j) => (
@@ -48,14 +49,15 @@ class Sudoku {
     positions.forEach((position) => {
       const [row, col] = position;
       this.puzzle[row][col] = { ...this.puzzle[row][col], isSelected: true };
-      const intersection = this.getIntersectedCellsFor(this.puzzle[row][col]);
-      intersection.forEach((cell) => {
-        this.puzzle[cell.position[0]][cell.position[1]] = { ...cell, isIntersected: true };
-      });
+    });
+    const intersection = this.getIntersection(positions);
+    intersection.forEach((cell) => {
+      const [row, col] = cell.position;
+      this.puzzle[row][col] = { ...cell, isIntersected: true };
     });
   }
 
-  getIntersectedCellsFor(cell) {
+  getIntersectedCellsBy(cell) {
     const result = [];
     this.puzzle.forEach((row) => {
       row.forEach((item) => {
@@ -64,6 +66,27 @@ class Sudoku {
         }
       });
     });
+    return result;
+  }
+
+  getIntersection(positions) {
+    const intersections = [];
+    positions.forEach((position) => {
+      const [row, col] = position;
+      intersections.push(this.getIntersectedCellsBy(this.puzzle[row][col]));
+    });
+
+    if (intersections.length === 0) {
+      return [];
+    }
+
+    const result = [];
+    intersections[0].forEach((cell) => {
+      if (intersections.every((intersection) => intersection.indexOf(cell) !== -1)) {
+        result.push(cell);
+      }
+    });
+
     return result;
   }
 
@@ -78,11 +101,12 @@ class Sudoku {
   }
 
   clearCell(row, col) {
-    this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'mark', value: [] };
+    this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'mark', value: [], incorrect: false };
   }
 
   setCellSingleValue(row, col, value) {
-    this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'cell', value };
+    const incorrect = (this.solution[row][col] !== value);
+    this.puzzle[row][col] = { ...this.puzzle[row][col], type: 'cell', value, incorrect };
   }
 
   updateMark(row, col, value) {
@@ -98,17 +122,19 @@ class Sudoku {
   }
 
   applyHint(hint) {
-    this.selectCells(hint.combination.marks.map((item) => (item.position)));
+    this.selectCells(hint.combination.marks.map((item) => [item.position[0], item.position[1]]));
     hint.changed_cells.forEach((cell) => {
       const oldCell = this.puzzle[cell.position[0]][cell.position[1]];
+      this.puzzle[cell.position[0]][cell.position[1]] = { ...oldCell, ...cell };
+    });
+    hint.changed_marks.forEach((cell) => {
+      const oldCell = this.puzzle[cell.position[0]][cell.position[1]];
       const removed = [];
-      if (cell.type === 'mark') {
-        hint.combination.values.forEach((value) => {
-          if (oldCell.value.indexOf(value) > -1) {
-            removed.push(value);
-          }
-        });
-      }
+      hint.combination.values.forEach((value) => {
+        if (oldCell.value.indexOf(value) > -1) {
+          removed.push(value);
+        }
+      });
       this.puzzle[cell.position[0]][cell.position[1]] = { ...oldCell, ...cell, removed };
     });
   }

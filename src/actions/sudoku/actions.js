@@ -11,7 +11,6 @@ export const RETRIEVE_HINT_REQUEST = 'RETRIEVE_HINT_REQUEST';
 export const RETRIEVE_HINT_SUCCESS = 'RETRIEVE_HINT_SUCCESS';
 export const RETRIEVE_HINT_FAILURE = 'RETRIEVE_HINT_FAILURE';
 
-
 export const SELECT_CELL = 'SELECT_CELL';
 export const CLEAR_SELECTION = 'CLEAR_SELECTION';
 export const SET_CELL_SINGLE_VALUE = 'SET_CELL_SINGLE_VALUE';
@@ -28,10 +27,13 @@ function retrieveSudokuRequest() {
 }
 
 
-function retrieveSudokuSuccess(puzzle) {
+function retrieveSudokuSuccess({ puzzle, solution }) {
   return {
     type: RETRIEVE_SUDOKU_SUCCESS,
-    payload: puzzle,
+    payload: {
+      puzzle,
+      solution,
+    },
   };
 }
 
@@ -91,11 +93,12 @@ function retrieveHintFailure(error) {
 }
 
 
-export function retrieveHint({ puzzle }) {
+export function retrieveHint({ puzzle, slug }) {
   return {
     type: RETRIEVE_HINT,
     payload: {
       puzzle,
+      slug,
     },
   };
 }
@@ -103,6 +106,18 @@ export function retrieveHint({ puzzle }) {
 
 function* retrieveHintSaga({ payload }) {
   const { puzzle } = payload;
+  const cells = [];
+  const marks = [];
+  puzzle.forEach((row) => (
+    row.forEach((cell) => {
+      if (cell.type === 'mark') {
+        marks.push(cell);
+      }
+      if (cell.type === 'cell') {
+        cells.push(cell);
+      }
+    })
+  ));
   const url = `${API_BASE_URL}/hints`;
   const options = {
     method: 'POST',
@@ -110,8 +125,7 @@ function* retrieveHintSaga({ payload }) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ puzzle }),
-
+    body: JSON.stringify({ cells, marks }),
   };
   yield put(retrieveHintRequest());
 

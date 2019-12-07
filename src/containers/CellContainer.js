@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(clearCell({ row, col }));
     }
     if (event.key >= 1 && event.key <= 9) {
-      dispatch(setCellSingleValue({ row, col, value: event.key }));
+      dispatch(setCellSingleValue({ row, col, value: parseInt(event.key, 10) }));
     }
   },
 });

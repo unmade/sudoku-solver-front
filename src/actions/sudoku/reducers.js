@@ -22,10 +22,10 @@ const INITIAL_STATE = {
 const SudokuReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case RETRIEVE_SUDOKU_SUCCESS: {
-      const { puzzle } = action.payload;
+      const { puzzle, solution } = action.payload;
       return {
         ...state,
-        sudoku: new Sudoku(puzzle),
+        sudoku: new Sudoku(puzzle, solution),
       };
     }
     case SELECT_CELL: {
@@ -83,8 +83,11 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case RETRIEVE_HINT_SUCCESS: {
+      const { sudoku } = state;
+      sudoku.selectCells(action.payload.combination.marks.map((cell) => [cell.position[0], cell.position[1]]));
       return {
         ...state,
+        sudoku,
         hint: action.payload,
       };
     }

@@ -18,13 +18,14 @@
     background-color: #ededed;
 }
 
+.sudoku-cell-incorrect {
+    color: #FF4040;
+}
+
 .sudoku-cell-container {
     height: 50px;
 }
 
 .sudoku-cell-container:focus {
     outline: none;
-    /* box-sizing: border-box; */
-    /* box-shadow: 0 0 3px 3px #6FFFB0; */
-    /* border-radius: 4px; */
 }
