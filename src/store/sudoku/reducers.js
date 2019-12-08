@@ -4,8 +4,10 @@ import {
   CELL_CHANGED,
   RETRIEVE_HINT_SUCCESS,
   RETRIEVE_SUDOKU_SUCCESS,
+  RETRIEVE_HINT_FAILURE,
   REDO_CHANGE,
   UNDO_CHANGE,
+  RETRIEVE_HINT_REQUEST,
 } from './actions';
 
 
@@ -15,7 +17,11 @@ const INITIAL_STATE = {
     undo: [],
     redo: [],
   },
-  hint: null,
+  hint: {
+    item: null,
+    loading: false,
+    error: null,
+  },
 };
 
 
@@ -29,7 +35,11 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         ...state,
         history,
         sudoku: applyHint(sudoku, hint),
-        hint: null,
+        hint: {
+          item: null,
+          error: null,
+          loading: false,
+        },
       };
     }
     case CELL_CHANGED: {
@@ -43,10 +53,33 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         sudoku,
       };
     }
+    case RETRIEVE_HINT_FAILURE: {
+      return {
+        ...state,
+        hint: {
+          item: null,
+          loading: false,
+          error: action.payload,
+        },
+      };
+    }
+    case RETRIEVE_HINT_REQUEST: {
+      return {
+        ...state,
+        hint: {
+          ...state.hint,
+          loading: true,
+        },
+      };
+    }
     case RETRIEVE_HINT_SUCCESS: {
       return {
         ...state,
-        hint: action.payload,
+        hint: {
+          item: action.payload,
+          loading: false,
+          error: null,
+        },
       };
     }
     case RETRIEVE_SUDOKU_SUCCESS: {

@@ -120,7 +120,11 @@ function* retrieveHintSaga({ payload }) {
   try {
     const response = yield fetch(url, options);
     const data = yield response.json();
-    yield put(retrieveHintSuccess(data));
+    if (!response.ok) {
+      yield put(retrieveHintFailure(data));
+    } else {
+      yield put(retrieveHintSuccess(data));
+    }
   } catch (e) {
     yield put(retrieveHintFailure(e));
   }

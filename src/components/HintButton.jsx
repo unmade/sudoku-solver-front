@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, Layer } from 'grommet';
 import { Info } from 'grommet-icons';
 import HintModal from './HintModal';
+import ErrorModal from './ErrorModal';
 
 
 const layerMargin = {
@@ -34,7 +35,7 @@ class HintButton extends React.Component {
 
   onReveal() {
     const { hint, applyHint } = this.props;
-    applyHint({ hint });
+    applyHint({ hint: hint.item });
     this.setState({
       open: false,
     });
@@ -43,7 +44,7 @@ class HintButton extends React.Component {
   render() {
     const { hint } = this.props;
     const { open } = this.state;
-    const shouldOpen = !!hint && open;
+    const shouldOpen = open; // !!hint.item && open;
     return (
       <Box>
         <Button
@@ -51,6 +52,7 @@ class HintButton extends React.Component {
           hoverIndicator
           open={shouldOpen}
           onClick={() => this.onOpen()}
+          disabled={hint.loading}
         />
         {shouldOpen && (
           <Layer
@@ -60,11 +62,19 @@ class HintButton extends React.Component {
             margin={layerMargin}
             onEsc={() => this.onClose()}
           >
-            <HintModal
-              hint={hint}
-              onReveal={() => this.onReveal()}
-              onClose={() => this.onClose()}
-            />
+            {hint.item && (
+              <HintModal
+                hint={hint.item}
+                onReveal={() => this.onReveal()}
+                onClose={() => this.onClose()}
+              />
+            )}
+            {hint.error && (
+              <ErrorModal
+                error={hint.error}
+                onClose={() => this.onClose()}
+              />
+            )}
           </Layer>
         )}
       </Box>
