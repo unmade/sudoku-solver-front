@@ -7,14 +7,26 @@ import './Cell.css';
 
 
 class Cell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.cellRef = React.createRef();
+  }
+
   shouldComponentUpdate(nextProps) {
     const { item } = this.props;
     return item !== nextProps.item;
   }
 
+  componentDidUpdate() {
+    const { hasFocus } = this.props;
+    if (hasFocus) {
+      this.cellRef.current.focus();
+    }
+  }
+
   render() {
     const {
-      item, onKeyUp, onFocus, onBlur, onMarkClick,
+      item, hasFocus, onKeyUp, onFocus, onBlur, onMarkClick,
     } = this.props;
 
     const className = (
@@ -26,7 +38,8 @@ class Cell extends React.Component {
     return (
       <td className={`sudoku-cell ${className}`}>
         <div
-          tabIndex="0"
+          ref={this.cellRef}
+          tabIndex={hasFocus ? 0 : 1}
           className="sudoku-cell-container"
           onFocus={onFocus}
           onBlur={onBlur}
