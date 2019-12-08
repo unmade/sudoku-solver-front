@@ -13,6 +13,7 @@ import {
 
 const INITIAL_STATE = {
   sudoku: emptySudoku(9, 9),
+  hasChanges: true,
   history: {
     undo: [],
     redo: [],
@@ -35,6 +36,7 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         ...state,
         history,
         sudoku: applyHint(sudoku, hint),
+        hasChanges: false,
         hint: {
           item: null,
           error: null,
@@ -51,6 +53,7 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         ...state,
         history,
         sudoku,
+        hasChanges: true,
       };
     }
     case RETRIEVE_HINT_FAILURE: {
@@ -97,6 +100,7 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         ...state,
         history,
         sudoku,
+        hasChanges: true,
       };
     }
     case UNDO_CHANGE: {
@@ -107,6 +111,7 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
         ...state,
         history,
         sudoku,
+        hasChanges: true,
       };
     }
     default:

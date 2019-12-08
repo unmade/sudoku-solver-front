@@ -5,13 +5,14 @@ import HintButton from '../components/HintButton';
 
 const mapStateToProps = (state) => ({
   sudoku: state.sudoku.sudoku,
+  hasChanges: state.sudoku.hasChanges,
   hint: state.sudoku.hint,
 });
 
 
 const mapDispatchToProps = (dispatch) => ({
   applyHint: ({ hint }) => dispatch(applyHint({ hint })),
-  retrieveHint: ({ puzzle }) => dispatch(retrieveHint({ puzzle })),
+  retrieveHint: ({ sudoku, hasChanges }) => dispatch(retrieveHint({ sudoku, hasChanges })),
 });
 
 

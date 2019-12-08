@@ -91,19 +91,20 @@ function retrieveHintFailure(error) {
 }
 
 
-export function retrieveHint({ puzzle }) {
+export function retrieveHint({ sudoku, hasChanges }) {
   return {
     type: RETRIEVE_HINT,
     payload: {
-      puzzle,
+      sudoku,
+      hasChanges,
     },
   };
 }
 
 
 function* retrieveHintSaga({ payload }) {
-  const { puzzle } = payload;
-  const url = `${API_BASE_URL}/hints`;
+  const { sudoku, hasChanges } = payload;
+  const url = `${API_BASE_URL}/hints?initial=${hasChanges}`;
   const options = {
     method: 'POST',
     mode: 'cors',
@@ -111,8 +112,8 @@ function* retrieveHintSaga({ payload }) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      cells: Object.values(puzzle).filter((cell) => cell.type === 'cell'),
-      marks: Object.values(puzzle).filter((cell) => cell.type === 'mark'),
+      cells: Object.values(sudoku).filter((cell) => cell.type === 'cell'),
+      marks: Object.values(sudoku).filter((cell) => cell.type === 'mark'),
     }),
   };
   yield put(retrieveHintRequest());

@@ -20,8 +20,8 @@ class HintButton extends React.Component {
   }
 
   onOpen() {
-    const { sudoku, retrieveHint } = this.props;
-    retrieveHint({ puzzle: sudoku });
+    const { sudoku, hasChanges, retrieveHint } = this.props;
+    retrieveHint({ sudoku, hasChanges });
     this.setState({
       open: true,
     });
