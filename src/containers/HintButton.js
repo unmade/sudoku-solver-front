@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { applyHint, retrieveHint } from '../actions/sudoku/actions';
+import { applyHint, retrieveHint } from '../store/sudoku/actions';
 import HintButton from '../components/HintButton';
 
 

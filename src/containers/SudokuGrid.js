@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Grid from '../components/Grid';
-import { cellChanged } from '../actions/sudoku/actions';
+import { cellChanged } from '../store/sudoku/actions';
 
 
 const mapStateToProps = (state) => ({

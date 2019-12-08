@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Button } from 'grommet';
-import { undoChange } from '../actions/sudoku/actions';
+import { undoChange } from '../store/sudoku/actions';
 
 
 const mapStateToProps = (state) => ({
