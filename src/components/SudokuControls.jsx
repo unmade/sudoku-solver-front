@@ -1,22 +1,19 @@
 import React from 'react';
-import { Box, Button } from 'grommet';
-import {
-  Erase, Redo, Undo,
-} from 'grommet-icons';
+import { Box } from 'grommet';
+import { Redo, Undo } from 'grommet-icons';
 import HintButton from '../containers/HintButton';
+import RedoButton from '../containers/RedoButton';
+import UndoButton from '../containers/UndoButton';
 
 
 const SudokuControls = () => (
   <Box>
     <Box direction="row" pad="small" gap="medium" align="center">
       <Box round="full" overflow="hidden" background="brand">
-        <Button icon={<Undo />} hoverIndicator />
+        <UndoButton icon={<Undo />} hoverIndicator />
       </Box>
       <Box round="full" overflow="hidden" background="brand">
-        <Button icon={<Redo />} hoverIndicator />
-      </Box>
-      <Box round="full" overflow="hidden" background="brand">
-        <Button icon={<Erase />} hoverIndicator />
+        <RedoButton icon={<Redo />} hoverIndicator />
       </Box>
       <Box round="full" overflow="hidden" background="brand">
         <HintButton />

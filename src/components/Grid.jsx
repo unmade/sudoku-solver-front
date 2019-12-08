@@ -2,7 +2,12 @@ import React from 'react';
 import './Grid.css';
 import Cell from './Cell';
 import {
-  clearCell, clearSelection, selectCells, selectIntersection, setCellSingleValue, toggleMarkValue,
+  clearCell,
+  clearSelection,
+  selectCells,
+  selectIntersection,
+  setCellSingleValue,
+  toggleMarkValue,
 } from '../sudoku';
 
 
@@ -39,25 +44,28 @@ class Grid extends React.Component {
   onKeyUp(event, row, col) {
     const { sudoku, onCellChange } = this.state;
     if (event.keyCode === 8) { // backspace
+      const newSudoku = clearCell(sudoku, row, col);
       this.setState({
-        sudoku: clearCell(sudoku, row, col),
+        sudoku: newSudoku,
       });
-      onCellChange(sudoku);
+      onCellChange(newSudoku);
     }
     if (event.key >= 1 && event.key <= 9) {
+      const newSudoku = setCellSingleValue(sudoku, row, col, parseInt(event.key, 10));
       this.setState({
-        sudoku: setCellSingleValue(sudoku, row, col, parseInt(event.key, 10)),
+        sudoku: newSudoku,
       });
-      onCellChange(sudoku);
+      onCellChange(newSudoku);
     }
   }
 
   onMarkClick(row, col, value) {
     const { sudoku, onCellChange } = this.state;
+    const newSudoku = toggleMarkValue(sudoku, row, col, parseInt(value, 10));
     this.setState({
-      sudoku: toggleMarkValue(sudoku, row, col, parseInt(value, 10)),
+      sudoku: newSudoku,
     });
-    onCellChange(sudoku);
+    onCellChange(newSudoku);
   }
 
   updateSudokuIfNeeded(prevSudoku) {

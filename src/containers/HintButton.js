@@ -4,7 +4,7 @@ import HintButton from '../components/HintButton';
 
 
 const mapStateToProps = (state) => ({
-  sudoku: state.sudoku.history,
+  sudoku: state.sudoku.sudoku,
   hint: state.sudoku.hint,
 });
 

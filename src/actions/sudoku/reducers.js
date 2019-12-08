@@ -4,12 +4,17 @@ import {
   CELL_CHANGED,
   RETRIEVE_HINT_SUCCESS,
   RETRIEVE_SUDOKU_SUCCESS,
+  REDO_CHANGE,
+  UNDO_CHANGE,
 } from './actions';
 
 
 const INITIAL_STATE = {
   sudoku: emptySudoku(9, 9),
-  history: emptySudoku(9, 9),
+  history: {
+    undo: [],
+    redo: [],
+  },
   hint: null,
 };
 
@@ -18,17 +23,24 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case APPLY_HINT: {
       const { hint } = action.payload;
-      const { sudoku } = state;
+      const { sudoku, history } = state;
+      history.undo.push(sudoku);
       return {
         ...state,
+        history,
         sudoku: applyHint(sudoku, hint),
+        hint: null,
       };
     }
     case CELL_CHANGED: {
+      const { sudoku: current, history } = state;
       const { sudoku } = action.payload;
+      history.undo.push(current);
+      history.redo = [];
       return {
         ...state,
-        history: sudoku,
+        history,
+        sudoku,
       };
     }
     case RETRIEVE_HINT_SUCCESS: {
@@ -42,7 +54,26 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         sudoku: parseSudoku(puzzle),
-        history: parseSudoku(puzzle),
+      };
+    }
+    case REDO_CHANGE: {
+      const { sudoku: current, history } = state;
+      const sudoku = history.redo.pop();
+      history.undo.push(current);
+      return {
+        ...state,
+        history,
+        sudoku,
+      };
+    }
+    case UNDO_CHANGE: {
+      const { sudoku: current, history } = state;
+      const sudoku = history.undo.pop();
+      history.redo.push(current);
+      return {
+        ...state,
+        history,
+        sudoku,
       };
     }
     default:
