@@ -9,11 +9,12 @@ import {
 class Grid extends React.Component {
   constructor(props) {
     super(props);
-    const { sudoku } = props;
+    const { sudoku, onCellChange } = props;
     this.state = {
       sizeN: 9,
       sizeM: 9,
       sudoku,
+      onCellChange,
     };
   }
 
@@ -36,24 +37,27 @@ class Grid extends React.Component {
   }
 
   onKeyUp(event, row, col) {
-    const { sudoku } = this.state;
+    const { sudoku, onCellChange } = this.state;
     if (event.keyCode === 8) { // backspace
       this.setState({
         sudoku: clearCell(sudoku, row, col),
       });
+      onCellChange(sudoku);
     }
     if (event.key >= 1 && event.key <= 9) {
       this.setState({
         sudoku: setCellSingleValue(sudoku, row, col, parseInt(event.key, 10)),
       });
+      onCellChange(sudoku);
     }
   }
 
   onMarkClick(row, col, value) {
-    const { sudoku } = this.state;
+    const { sudoku, onCellChange } = this.state;
     this.setState({
       sudoku: toggleMarkValue(sudoku, row, col, parseInt(value, 10)),
     });
+    onCellChange(sudoku);
   }
 
   updateSudokuIfNeeded(prevSudoku) {
