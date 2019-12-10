@@ -25,12 +25,12 @@ function retrieveSudokuRequest() {
 }
 
 
-function retrieveSudokuSuccess({ puzzle, solution }) {
+function retrieveSudokuSuccess({ cells, box_size: boxSize }) {
   return {
     type: RETRIEVE_SUDOKU_SUCCESS,
     payload: {
-      puzzle,
-      solution,
+      cells,
+      boxSize,
     },
   };
 }
@@ -104,7 +104,7 @@ export function retrieveHint({ sudoku, hasChanges }) {
 
 function* retrieveHintSaga({ payload }) {
   const { sudoku, hasChanges } = payload;
-  const url = `${API_BASE_URL}/hints?initial=${hasChanges}`;
+  const url = `${API_BASE_URL}/hints?with_pencil_marks=${hasChanges}`;
   const options = {
     method: 'POST',
     mode: 'cors',
@@ -112,8 +112,9 @@ function* retrieveHintSaga({ payload }) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      cells: Object.values(sudoku).filter((cell) => cell.type === 'cell'),
-      marks: Object.values(sudoku).filter((cell) => cell.type === 'mark'),
+      cells: Object.values(sudoku).map(({ position, value, candidates }) => (
+        { position, value, candidates }
+      )),
     }),
   };
   yield put(retrieveHintRequest());

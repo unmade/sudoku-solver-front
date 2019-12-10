@@ -1,4 +1,10 @@
-import { parseSudoku, emptySudoku, applyHint } from '../../sudoku';
+import {
+  applyHint,
+  clearSelection,
+  emptySudoku,
+  makeSudoku,
+  selectCells,
+} from '../../sudoku';
 import {
   APPLY_HINT,
   CELL_CHANGED,
@@ -10,9 +16,11 @@ import {
   RETRIEVE_HINT_REQUEST,
 } from './actions';
 
+const DEFAULT_BOX_SIZE = [3, 3];
 
 const INITIAL_STATE = {
-  sudoku: emptySudoku(9, 9),
+  sudoku: emptySudoku(DEFAULT_BOX_SIZE[0] * DEFAULT_BOX_SIZE[1]),
+  boxSize: DEFAULT_BOX_SIZE,
   hasChanges: true,
   history: {
     undo: [],
@@ -76,8 +84,12 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case RETRIEVE_HINT_SUCCESS: {
+      const { sudoku } = state;
+      const hint = action.payload;
+      const positions = hint.combination.cells.map(({ position }) => [position[0], position[1]]);
       return {
         ...state,
+        sudoku: selectCells(clearSelection(sudoku), positions),
         hint: {
           item: action.payload,
           loading: false,
@@ -86,10 +98,11 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case RETRIEVE_SUDOKU_SUCCESS: {
-      const { puzzle } = action.payload;
+      const { cells, boxSize } = action.payload;
       return {
         ...state,
-        sudoku: parseSudoku(puzzle),
+        boxSize,
+        sudoku: makeSudoku(cells, boxSize),
       };
     }
     case REDO_CHANGE: {

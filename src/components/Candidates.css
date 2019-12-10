@@ -1,4 +1,4 @@
-.sudoku-marks-container {
+.sudoku-candidates-container {
     height: 100%;
     font-size: 12px;
     color: dimgray;
@@ -6,27 +6,27 @@
     cursor: default;
 }
 
-.sudoku-marks-container span {
+.sudoku-candidates-container span {
     display: inline-block;
     width: 15px;
     height: 15px;
 }
 
-.sudoku-marks-container .sudoku-mark-deselected {
+.sudoku-candidates-container .sudoku-candidate-deselected {
     color: #bbb;
     visibility: hidden;
 }
 
-.sudoku-cell-container:focus .sudoku-mark-deselected {
+.sudoku-cell-container:focus .sudoku-candidate-deselected {
     visibility: visible;
 }
 
-.sudoku-cell-container:focus .sudoku-mark-deselected:hover {
+.sudoku-cell-container:focus .sudoku-candidate-deselected:hover {
     color: #999;
     visibility: visible;
 }
 
-.sudoku-marks-container .sudoku-mark-removed {
+.sudoku-candidates-container .sudoku-candidate-removed {
     color: #FF4040;
     text-decoration: line-through;
 }

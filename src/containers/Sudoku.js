@@ -5,6 +5,7 @@ import { cellChanged } from '../store/sudoku/actions';
 
 const mapStateToProps = (state) => ({
   sudoku: state.sudoku.sudoku,
+  boxSize: state.sudoku.boxSize,
 });
 
 
@@ -13,10 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-const SudokuGrid = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Grid);
-
-
-export default SudokuGrid;

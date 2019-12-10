@@ -12,28 +12,36 @@ function getSquareNum(row, col) {
 }
 
 
-export function emptySudoku(n, m) {
+export function emptySudoku(size) {
   const sudoku = {};
-  ([...Array(n).keys()]).forEach((i) => {
-    ([...Array(m).keys()]).forEach((j) => {
-      sudoku[[i, j]] = { type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] };
+  ([...Array(size).keys()]).forEach((i) => {
+    ([...Array(size).keys()]).forEach((j) => {
+      sudoku[[i, j]] = {
+        position: [i, j, getSquareNum(i, j)],
+        value: null,
+        candidates: [],
+        removed: [],
+        isSelected: false,
+        isIntersected: false,
+      };
     });
   });
   return sudoku;
 }
 
 
-export function parseSudoku(puzzle) {
-  const result = {};
-  puzzle.forEach((row, i) => (
-    row.forEach((value, j) => {
-      if (value) {
-        result[[i, j]] = { type: 'cell', position: [i, j, getSquareNum(i, j)], value };
-      } else {
-        result[[i, j]] = { type: 'mark', position: [i, j, getSquareNum(i, j)], value: [] };
-      }
-    })
-  ));
+export function makeSudoku(cells, boxSize) {
+  const size = boxSize[0] * boxSize[1];
+  const result = emptySudoku(size);
+  cells.forEach((cell) => {
+    const [row, col] = cell.position;
+    result[[row, col]] = {
+      ...cell,
+      removed: [],
+      isSelected: false,
+      isIntersected: false,
+    };
+  });
   return result;
 }
 
@@ -97,7 +105,7 @@ export function clearSelection(puzzle) {
 
 export function clearCell(puzzle, row, col) {
   const result = {};
-  result[[row, col]] = { ...puzzle[[row, col]], value: [], type: 'mark' };
+  result[[row, col]] = { ...puzzle[[row, col]], value: null, candidates: [] };
   return {
     ...puzzle,
     ...result,
@@ -107,7 +115,7 @@ export function clearCell(puzzle, row, col) {
 
 export function setCellSingleValue(puzzle, row, col, value) {
   const result = {};
-  result[[row, col]] = { ...puzzle[[row, col]], value, type: 'cell' };
+  result[[row, col]] = { ...puzzle[[row, col]], value, candidates: [] };
   return {
     ...puzzle,
     ...result,
@@ -115,9 +123,9 @@ export function setCellSingleValue(puzzle, row, col, value) {
 }
 
 
-function updateMark(puzzle, row, col, value) {
+function updateCandidates(puzzle, row, col, candidates) {
   const result = {};
-  result[[row, col]] = { ...puzzle[[row, col]], value, type: 'mark' };
+  result[[row, col]] = { ...puzzle[[row, col]], candidates };
   return {
     ...puzzle,
     ...result,
@@ -125,41 +133,36 @@ function updateMark(puzzle, row, col, value) {
 }
 
 
-export function toggleMarkValue(puzzle, row, col, value) {
-  if (puzzle[[row, col]].value.indexOf(value) < 0) {
-    return updateMark(puzzle, row, col, [value, ...puzzle[[row, col]].value]);
+export function toggleCandidate(puzzle, row, col, candidate) {
+  const cell = puzzle[[row, col]];
+  if (cell.candidates.indexOf(candidate) < 0) {
+    return updateCandidates(puzzle, row, col, [candidate, ...cell.candidates]);
   }
-  return updateMark(puzzle, row, col, puzzle[[row, col]].value.filter((e) => (e !== value)));
+  return updateCandidates(puzzle, row, col, cell.candidates.filter((e) => (e !== candidate)));
 }
 
 
 export function applyHint(puzzle, hint) {
-  const positions = hint.combination.marks.map((item) => [item.position[0], item.position[1]]);
-  const newPuzzle = selectIntersection(selectCells(clearSelection(puzzle), positions), positions);
+  const positions = hint.combination.cells.map((item) => [item.position[0], item.position[1]]);
+  const sudoku = selectIntersection(selectCells(clearSelection(puzzle), positions), positions);
 
-  const changedCells = {};
-  hint.changed_cells.forEach((cell) => {
+  const changes = {};
+  hint.changes.forEach((cell) => {
     const [row, col] = cell.position;
-    const oldCell = newPuzzle[[row, col]];
-    changedCells[[row, col]] = { ...oldCell, ...cell };
-  });
-
-  const changedMarks = {};
-  hint.changed_marks.forEach((cell) => {
-    const [row, col] = cell.position;
-    const oldCell = newPuzzle[[row, col]];
-    const removed = [];
-    hint.combination.values.forEach((value) => {
-      if (oldCell.value.indexOf(value) > -1) {
-        removed.push(value);
-      }
-    });
-    changedMarks[[row, col]] = { ...oldCell, ...cell, removed, isIntersected: true };
+    const oldCell = sudoku[[row, col]];
+    const removed = hint.combination.values.filter((value) => (
+      oldCell.candidates.indexOf(value) > -1
+    ));
+    changes[[row, col]] = {
+      ...oldCell,
+      ...cell,
+      isIntersected: true,
+      removed,
+    };
   });
 
   return {
-    ...newPuzzle,
-    ...changedCells,
-    ...changedMarks,
+    ...sudoku,
+    ...changes,
   };
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from 'grommet';
-import SudokuGrid from '../containers/SudokuGrid';
+import Sudoku from '../containers/Sudoku';
 import SudokuControls from '../components/SudokuControls';
 
 
 const BlankGrid = () => (
   <Box align="center">
-    <SudokuGrid />
+    <Sudoku />
     <SudokuControls />
   </Box>
 );

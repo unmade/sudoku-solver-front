@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import Mark from './Mark';
+import Candidates from './Candidates';
 import SingleValue from './SingleValue';
 import './Cell.css';
 
@@ -26,7 +26,7 @@ class Cell extends React.Component {
 
   render() {
     const {
-      item, hasFocus, onKeyUp, onFocus, onBlur, onMarkClick,
+      item, boxSize, onKeyUp, onFocus, onBlur, onCandidateClick,
     } = this.props;
 
     const className = (
@@ -39,17 +39,18 @@ class Cell extends React.Component {
       <td className={`sudoku-cell ${className}`}>
         <div
           ref={this.cellRef}
-          tabIndex={hasFocus ? 0 : 1}
+          tabIndex={0}
           className="sudoku-cell-container"
           onFocus={onFocus}
           onBlur={onBlur}
           onKeyUp={onKeyUp}
         >
-          {(item.type === 'mark') ? (
-            <Mark
-              marks={item.value}
+          {(item.value === null) ? (
+            <Candidates
+              boxSize={boxSize}
+              candidates={item.candidates}
               removed={item.removed}
-              onMarkClick={onMarkClick}
+              onCandidateClick={onCandidateClick}
             />
           ) : (
             <SingleValue value={item.value} />

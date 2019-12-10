@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import {
   grommet, Box, Grid, Grommet, Button, Text,
 } from 'grommet';
-import { User, Menu } from 'grommet-icons';
+import { Menu } from 'grommet-icons';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
 
@@ -45,7 +45,6 @@ class App extends React.Component {
             pad={{ horizontal: 'medium', vertical: 'small' }}
           >
             <Button icon={<Menu />} onClick={() => this.toggleSidebar()} />
-            <Button icon={<User />} onClick={() => {}} />
           </Box>
           {isSidebarOpen && (
             <Box
