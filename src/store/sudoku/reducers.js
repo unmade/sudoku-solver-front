@@ -15,6 +15,8 @@ import {
   UNDO_CHANGE,
   RETRIEVE_HINT_REQUEST,
 } from './actions';
+import getMessageByCode from '../../errors';
+
 
 const DEFAULT_BOX_SIZE = [3, 3];
 
@@ -65,12 +67,13 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case RETRIEVE_HINT_FAILURE: {
+      const { code } = action.payload;
       return {
         ...state,
         hint: {
           item: null,
           loading: false,
-          error: action.payload,
+          error: getMessageByCode(code),
         },
       };
     }
