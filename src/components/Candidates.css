@@ -1,0 +1,32 @@
+.sudoku-candidates-container {
+    height: 100%;
+    font-size: 12px;
+    color: dimgray;
+    line-height: normal;
+    cursor: default;
+}
+
+.sudoku-candidates-container span {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+
+.sudoku-candidates-container .sudoku-candidate-deselected {
+    color: #bbb;
+    visibility: hidden;
+}
+
+.sudoku-cell-container:focus .sudoku-candidate-deselected {
+    visibility: visible;
+}
+
+.sudoku-cell-container:focus .sudoku-candidate-deselected:hover {
+    color: #999;
+    visibility: visible;
+}
+
+.sudoku-candidates-container .sudoku-candidate-removed {
+    color: #FF4040;
+    text-decoration: line-through;
+}

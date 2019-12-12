@@ -1,0 +1,31 @@
+.sudoku-cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #c3c3c3;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.sudoku-cell-selected {
+    background-color: #dadada;
+}
+
+.sudoku-cell-intersected {
+    background-color: #ededed;
+}
+
+.sudoku-cell-incorrect {
+    color: #FF4040;
+}
+
+.sudoku-cell-container {
+    height: 50px;
+}
+
+.sudoku-cell-container:focus {
+    outline: none;
+}
