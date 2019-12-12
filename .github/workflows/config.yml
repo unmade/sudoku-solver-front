@@ -21,7 +21,7 @@ jobs:
         TAG: ${{ steps.tag_name.outputs.TAG }}
         API_BASE_URL: ${{ secrets.API_BASE_URL }}
       run: |
-        docker build . -t fdooch/sudoku-solver-front:${TAG} --build-arg api_base_url=API_BASE_URL
+        docker build . -t fdooch/sudoku-solver-front:${TAG} --build-arg api_base_url=${API_BASE_URL}
 
     - name: Log in to the Heroku registry
       env:
