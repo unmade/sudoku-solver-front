@@ -28,7 +28,6 @@ class Cell extends React.Component {
     const {
       item, boxSize, onKeyUp, onFocus, onBlur, onCandidateClick,
     } = this.props;
-
     const className = (
       (item.isSelected ? ' sudoku-cell-selected' : '')
       + (item.isIntersected && !item.isSelected ? ' sudoku-cell-intersected' : '')

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Grid from '../components/Grid';
+import Sudoku from '../components/Sudoku';
 import { cellChanged } from '../store/sudoku/actions';
 
 
@@ -17,4 +17,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Grid);
+)(Sudoku);
