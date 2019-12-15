@@ -13,13 +13,13 @@ const Candidates = ({ candidates, removed, boxSize, onCandidateClick }) => {
           {[...Array(width).keys()].map((j) => {
             const value = Math.floor(i % width) * width + Math.floor(j % length) + 1;
             if (removed.length > 0 && removed.indexOf(value) > -1) {
-              return <span className="sudoku-candidate-removed" key={j}>{value}</span>;
+              return <span className="sudoku-candidate removed" key={j}>{value}</span>;
             }
-            const className = candidates.indexOf(value) > -1 ? 'sudoku-candidate-selected' : 'sudoku-candidate-deselected';
+            const className = candidates.indexOf(value) > -1 ? 'selected' : 'deselected';
             return (
               <span
                 onClick={() => onCandidateClick(value)}
-                className={className}
+                className={`sudoku-candidate ${className}`}
                 key={j}
               >
                 {value}

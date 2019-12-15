@@ -1,32 +1,48 @@
 .sudoku-candidates-container {
-    height: 100%;
-    font-size: 12px;
+    font-size: calc(0.1em + 2vw);
+    line-height: 1;
     color: dimgray;
-    line-height: normal;
     cursor: default;
+
+    width: 100%;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90%;
 }
 
-.sudoku-candidates-container span {
+@media only screen and (min-width: 550px) {
+    .sudoku-candidates-container {
+      font-size: 12px;
+    }
+  }
+
+.sudoku-candidate {
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 30%;
 }
 
-.sudoku-candidates-container .sudoku-candidate-deselected {
+.sudoku-cell-container .deselected {
     color: #bbb;
     visibility: hidden;
 }
 
-.sudoku-cell-container:focus .sudoku-candidate-deselected {
+.sudoku-cell-container:focus .deselected {
     visibility: visible;
 }
 
-.sudoku-cell-container:focus .sudoku-candidate-deselected:hover {
+.sudoku-cell-container:focus .deselected:hover {
     color: #999;
     visibility: visible;
 }
 
-.sudoku-candidates-container .sudoku-candidate-removed {
+.sudoku-cell-container .removed {
     color: #FF4040;
     text-decoration: line-through;
 }
