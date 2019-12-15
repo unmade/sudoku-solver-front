@@ -26,7 +26,7 @@ class Cell extends React.Component {
 
   render() {
     const {
-      item, boxSize, onKeyUp, onFocus, onBlur, onCandidateClick,
+      item, boxSize, onKeyUp, onFocus, onCandidateClick,
     } = this.props;
     const className = (
       (item.isSelected ? ' sudoku-cell-selected' : '')
@@ -41,7 +41,6 @@ class Cell extends React.Component {
           tabIndex={0}
           className="sudoku-cell-container"
           onFocus={onFocus}
-          onBlur={onBlur}
           onKeyUp={onKeyUp}
         >
           {(item.value === null) ? (

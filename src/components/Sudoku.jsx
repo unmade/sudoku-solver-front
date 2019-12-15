@@ -1,5 +1,7 @@
 import React from 'react';
+import { Box } from 'grommet';
 import Grid from './Grid';
+import Keypad from './Keypad';
 import {
   clearCell,
   clearSelection,
@@ -14,6 +16,9 @@ class Sudoku extends React.Component {
   constructor(props) {
     super(props);
     const { boxSize, sudoku, onCellChange } = props;
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.gridNode = null;
+    this.keypadNode = null;
     this.state = {
       focusPosition: null,
       size: boxSize[0] * boxSize[1],
@@ -22,9 +27,17 @@ class Sudoku extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside, false);
+  }
+
   componentDidUpdate(prevProps) {
     this.updateSudokuIfNeeded(prevProps.sudoku);
     this.updateBoxSizeIfNeeded(prevProps.boxSize);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside, false);
   }
 
   onBlur() {
@@ -81,6 +94,38 @@ class Sudoku extends React.Component {
       sudoku: newSudoku,
     });
     onCellChange(newSudoku);
+  }
+
+  onNumberClick(value) {
+    const { focusPosition, sudoku } = this.state;
+    if (focusPosition) {
+      const { onCellChange } = this.props;
+      const [row, col] = focusPosition;
+      const newSudoku = setCellSingleValue(sudoku, row, col, parseInt(value, 10));
+      this.setState({
+        sudoku: newSudoku,
+      });
+      onCellChange(newSudoku);
+    }
+  }
+
+  onErase() {
+    const { focusPosition, sudoku } = this.state;
+    if (focusPosition) {
+      const { onCellChange } = this.props;
+      const [row, col] = focusPosition;
+      const newSudoku = clearCell(sudoku, row, col);
+      this.setState({
+        sudoku: newSudoku,
+      });
+      onCellChange(newSudoku);
+    }
+  }
+
+  handleClickOutside(e) {
+    if (!this.gridNode.contains(e.target) && !this.keypadNode.contains(e.target)) {
+      this.onBlur();
+    }
   }
 
   moveLeft() {
@@ -197,16 +242,27 @@ class Sudoku extends React.Component {
     const { boxSize } = this.props;
     const { focusPosition, size, sudoku } = this.state;
     return (
-      <Grid
-        boxSize={boxSize}
-        focusPosition={focusPosition}
-        size={size}
-        sudoku={sudoku}
-        onBlur={() => () => this.onBlur()}
-        onFocus={(i, j) => () => this.onFocus(i, j)}
-        onKeyUp={(i, j) => (event) => this.onKeyUp(event, i, j)}
-        onCandidateClick={(i, j) => (value) => this.onCandidateClick(i, j, value)}
-      />
+      <Box fill>
+        <Box ref={(node) => { this.gridNode = node; }}>
+          <Grid
+            boxSize={boxSize}
+            focusPosition={focusPosition}
+            size={size}
+            sudoku={sudoku}
+            onBlur={() => () => this.onBlur()}
+            onFocus={(i, j) => () => this.onFocus(i, j)}
+            onKeyUp={(i, j) => (event) => this.onKeyUp(event, i, j)}
+            onCandidateClick={(i, j) => (value) => this.onCandidateClick(i, j, value)}
+          />
+        </Box>
+        <Box ref={(node) => { this.keypadNode = node; }}>
+          <Keypad
+            size={size}
+            onErase={() => this.onErase()}
+            onNumberClick={(value) => this.onNumberClick(value)}
+          />
+        </Box>
+      </Box>
     );
   }
 }
