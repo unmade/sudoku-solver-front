@@ -1,11 +1,18 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import {
-  grommet, Box, Grid, Grommet, Button, Text,
+  grommet, Box, Header, Grid, Grommet, Button, Text,
 } from 'grommet';
 import { Menu } from 'grommet-icons';
+import Sidebar from './components/Sidebar';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
+
+
+const headerPad = {
+  horizontal: 'medium',
+  vertical: 'small',
+};
 
 
 class App extends React.Component {
@@ -37,39 +44,24 @@ class App extends React.Component {
             { name: 'main', start: [1, 1], end: [1, 1] },
           ]}
         >
-          <Box
-            gridArea="header"
-            direction="row"
-            align="center"
-            justify="between"
-            pad={{ horizontal: 'medium', vertical: 'small' }}
-          >
+          <Header gridArea="header" pad={headerPad}>
             <Button icon={<Menu />} onClick={() => this.toggleSidebar()} />
-          </Box>
-          {isSidebarOpen && (
-            <Box
-              gridArea="sidebar"
-              gap="medium"
-              pad="medium"
-              animation={[
-                { type: 'fadeIn', duration: 300 },
-                { type: 'slideRight', size: 'xlarge', duration: 150 },
-              ]}
-            >
-              {[{ name: 'Blank Grid', href: 'blank' }, { name: 'Daily Sudoku', href: '/' }].map((item) => (
-                <Button key={item.name} href={item.href} hoverIndicator>
-                  <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
-                    <Text size="large">{item.name}</Text>
-                  </Box>
-                </Button>
-              ))}
-            </Box>
-          )}
-          <Box gridArea="main" justify="center">
+          </Header>
+
+          <Sidebar open={isSidebarOpen} onClose={() => this.toggleSidebar()}>
+            {[{ name: 'Blank Grid', href: 'blank' }, { name: 'Daily Sudoku', href: '/' }].map((item) => (
+              <Button key={item.name} href={item.href} hoverIndicator>
+                <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
+                  <Text size="large">{item.name}</Text>
+                </Box>
+              </Button>
+            ))}
+          </Sidebar>
+
+          <Box gridArea="main" as="main" justify="center">
             <Route exact path="/" component={Daily} />
             <Route path="/blank" component={BlankGrid} />
           </Box>
-
         </Grid>
       </Grommet>
     );
