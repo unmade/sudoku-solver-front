@@ -1,6 +1,8 @@
 .sudoku {
-    width: 90%;
-    max-width: 500px;
+    max-width: 90vw;
+    max-height: 90vw;
+    width: 60vh;
+    height: 60vh;
     margin: 0 auto;
     border-spacing: 0px;
     border-collapse: collapse;
