@@ -12,14 +12,6 @@
     -ms-user-select: none; /* IE10+ */
 }
 
-.sudoku-cell .sudoku-cell-container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
 .sudoku-cell-selected {
     background-color: #dadada;
 }

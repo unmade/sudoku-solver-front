@@ -7,12 +7,29 @@ import { Menu } from 'grommet-icons';
 import Sidebar from './components/Sidebar';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
+import Random from './pages/Random';
 
 
 const headerPad = {
   horizontal: 'medium',
   vertical: 'small',
 };
+
+
+const pages = [
+  {
+    name: 'Blank Grid',
+    href: 'blank',
+  },
+  {
+    name: 'Daily Sudoku',
+    href: '/daily',
+  },
+  {
+    name: 'Random Sudoku',
+    href: '/random',
+  },
+];
 
 
 class App extends React.Component {
@@ -49,7 +66,7 @@ class App extends React.Component {
           </Header>
 
           <Sidebar open={isSidebarOpen} onClose={() => this.toggleSidebar()}>
-            {[{ name: 'Blank Grid', href: 'blank' }, { name: 'Daily Sudoku', href: '/' }].map((item) => (
+            {pages.map((item) => (
               <Button key={item.name} href={item.href} hoverIndicator>
                 <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
                   <Text size="large">{item.name}</Text>
@@ -60,7 +77,9 @@ class App extends React.Component {
 
           <Box gridArea="main" as="main" justify="center">
             <Route exact path="/" component={Daily} />
+            <Route exact path="/daily" component={Daily} />
             <Route path="/blank" component={BlankGrid} />
+            <Route path="/random" component={Random} />
           </Box>
         </Grid>
       </Grommet>
