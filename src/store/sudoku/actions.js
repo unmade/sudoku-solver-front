@@ -44,16 +44,19 @@ function retrieveSudokuFailure(error) {
 }
 
 
-export function retrieveSudoku() {
+export function retrieveSudoku({ slug }) {
   return {
     type: RETRIEVE_SUDOKU,
-    payload: null,
+    payload: {
+      slug,
+    },
   };
 }
 
 
-function* retrieveSudokuSaga() {
-  const url = `${API_BASE_URL}/sudoku`;
+function* retrieveSudokuSaga({ payload }) {
+  const { slug } = payload;
+  const url = `${API_BASE_URL}/sudoku/${slug}`;
 
   yield put(retrieveSudokuRequest());
 
