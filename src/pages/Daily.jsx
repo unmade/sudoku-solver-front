@@ -14,9 +14,15 @@ class Daily extends React.Component {
 
   render() {
     return (
-      <Box align="center">
-        <Sudoku />
-        <ControlBar />
+      <Box fill="vertical">
+        <Box fill justify="center">
+          <Box>
+            <Sudoku />
+          </Box>
+        </Box>
+        <Box responsive={false}>
+          <ControlBar />
+        </Box>
       </Box>
     );
   }
