@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Box } from 'grommet';
 import { retrieveSudoku } from '../store/sudoku/actions';
+import ControlBar from '../components/ControlBar';
 import Sudoku from '../containers/Sudoku';
-import SudokuControls from '../components/SudokuControls';
 
 
 class Daily extends React.Component {
@@ -16,7 +16,7 @@ class Daily extends React.Component {
     return (
       <Box align="center">
         <Sudoku />
-        <SudokuControls />
+        <ControlBar />
       </Box>
     );
   }
