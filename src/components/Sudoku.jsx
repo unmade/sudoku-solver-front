@@ -12,6 +12,11 @@ import {
 } from '../sudoku';
 
 
+const keypadPad = {
+  top: 'medium',
+};
+
+
 class Sudoku extends React.Component {
   constructor(props) {
     super(props);
@@ -255,7 +260,11 @@ class Sudoku extends React.Component {
             onCandidateClick={(i, j) => (value) => this.onCandidateClick(i, j, value)}
           />
         </Box>
-        <Box ref={(node) => { this.keypadNode = node; }}>
+        <Box
+          pad={keypadPad}
+          responsive={false}
+          ref={(node) => { this.keypadNode = node; }}
+        >
           <Keypad
             size={size}
             onErase={() => this.onErase()}
