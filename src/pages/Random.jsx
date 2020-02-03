@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Box } from 'grommet';
 import { retrieveSudoku } from '../store/sudoku/actions';
 import Sudoku from '../containers/Sudoku';
-import SudokuControls from '../components/SudokuControls';
+import ControlBar from '../components/ControlBar';
 
 
 class Random extends React.Component {
@@ -16,7 +16,7 @@ class Random extends React.Component {
     return (
       <Box align="center">
         <Sudoku />
-        <SudokuControls />
+        <ControlBar />
       </Box>
     );
   }
