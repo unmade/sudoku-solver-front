@@ -11,7 +11,6 @@ export const RETRIEVE_HINT_REQUEST = 'RETRIEVE_HINT_REQUEST';
 export const RETRIEVE_HINT_SUCCESS = 'RETRIEVE_HINT_SUCCESS';
 export const RETRIEVE_HINT_FAILURE = 'RETRIEVE_HINT_FAILURE';
 
-export const APPLY_HINT = 'APPLY_HINT';
 export const CELL_CHANGED = 'CELL_CHANGED';
 export const REDO_CHANGE = 'REDO_CHANGE';
 export const UNDO_CHANGE = 'UNDO_CHANGE';
@@ -133,16 +132,6 @@ function* retrieveHintSaga({ payload }) {
   } catch (e) {
     yield put(retrieveHintFailure(e));
   }
-}
-
-
-export function applyHint({ hint }) {
-  return {
-    type: APPLY_HINT,
-    payload: {
-      hint,
-    },
-  };
 }
 
 

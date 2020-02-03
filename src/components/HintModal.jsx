@@ -12,7 +12,9 @@ const border = {
 };
 
 
-const HintModal = ({ hint, onReveal, onClose }) => {
+const HintModal = ({
+  hint, loading, onCancel, onNext, onClose,
+}) => {
   const message = getHintMessage(hint.combination.name);
   return (
     <Box border={border} pad="medium" gap="small" size="small">
@@ -29,10 +31,18 @@ const HintModal = ({ hint, onReveal, onClose }) => {
       </Box>
       <Box direction="row" gap="medium" justify="between">
         <Box>
-          <Button label={<Text size="small">Learn More</Text>} />
+          <Button
+            label={<Text size="small">Cancel</Text>}
+            onClick={onCancel}
+          />
         </Box>
         <Box>
-          <Button label={<Text size="small">Reveal</Text>} onClick={onReveal} primary />
+          <Button
+            label={<Text size="small">Next</Text>}
+            onClick={onNext}
+            disabled={loading}
+            primary
+          />
         </Box>
       </Box>
     </Box>
