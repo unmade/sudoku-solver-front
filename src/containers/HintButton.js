@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { applyHint, retrieveHint } from '../store/sudoku/actions';
+import { retrieveHint, undoChange } from '../store/sudoku/actions';
 import HintButton from '../components/HintButton';
 
 
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = (dispatch) => ({
-  applyHint: ({ hint }) => dispatch(applyHint({ hint })),
+  undoChange: () => dispatch(undoChange()),
   retrieveHint: ({ sudoku, hasChanges }) => dispatch(retrieveHint({ sudoku, hasChanges })),
 });
 

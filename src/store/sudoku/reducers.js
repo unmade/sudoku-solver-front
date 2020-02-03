@@ -1,12 +1,9 @@
 import {
   applyHint,
-  clearSelection,
   emptySudoku,
   makeSudoku,
-  selectCells,
 } from '../../sudoku';
 import {
-  APPLY_HINT,
   CELL_CHANGED,
   RETRIEVE_HINT_SUCCESS,
   RETRIEVE_SUDOKU_SUCCESS,
@@ -38,22 +35,6 @@ const INITIAL_STATE = {
 
 const SudokuReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case APPLY_HINT: {
-      const { hint } = action.payload;
-      const { sudoku, history } = state;
-      history.undo.push(sudoku);
-      return {
-        ...state,
-        history,
-        sudoku: applyHint(sudoku, hint),
-        hasChanges: false,
-        hint: {
-          item: null,
-          error: null,
-          loading: false,
-        },
-      };
-    }
     case CELL_CHANGED: {
       const { sudoku: current, history } = state;
       const { sudoku } = action.payload;
@@ -87,12 +68,14 @@ const SudokuReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case RETRIEVE_HINT_SUCCESS: {
-      const { sudoku } = state;
+      const { sudoku, history } = state;
       const hint = action.payload;
-      const positions = hint.combination.cells.map(({ position }) => [position[0], position[1]]);
+      history.undo.push(sudoku);
       return {
         ...state,
-        sudoku: selectCells(clearSelection(sudoku), positions),
+        history,
+        sudoku: applyHint(sudoku, hint),
+        hasChanges: false,
         hint: {
           item: action.payload,
           loading: false,
