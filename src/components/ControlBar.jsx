@@ -5,7 +5,7 @@ import History from '../containers/History';
 
 
 const ControlBar = () => (
-  <Box align="end" fill="horizontal" justify="between" direction="row">
+  <Box pad="small" align="end" fill="horizontal" justify="between" direction="row">
     <History />
     <Box pad="small">
       <Box round="full" overflow="hidden" background="brand">

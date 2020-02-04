@@ -1,8 +1,15 @@
 import React from 'react';
 import {
-  Box, Button, Heading, Paragraph, Text,
+  Accordion,
+  AccordionPanel,
+  Box,
+  Button,
+  Paragraph,
+  ResponsiveContext,
+  Text,
+  ThemeContext,
 } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Close, CircleInformation } from 'grommet-icons';
 import getHintMessage from '../hints';
 
 
@@ -12,38 +19,56 @@ const border = {
 };
 
 
-const HintModal = ({
-  hint, loading, onCancel, onNext, onClose,
-}) => {
+const accordionTheme = {
+  accordion: {
+    icons: {
+    },
+    border: null,
+  },
+};
+
+
+const AccordionHeader = (title) => (
+  <Box direction="row" justify="between">
+    <Box align="center" direction="row" gap="small">
+      <CircleInformation color="brand" />
+      <Text size="small" weight="bold">{title}</Text>
+    </Box>
+  </Box>
+);
+
+
+const HintModal = ({ hint, onClose }) => {
   const message = getHintMessage(hint.combination.name);
+  const size = React.useContext(ResponsiveContext);
+  const defaultIndex = (size === 'small') ? 1 : 0;
+  const [activeIndex, setActiveIndex] = React.useState([defaultIndex]);
   return (
-    <Box border={border} pad="medium" gap="small" size="small">
-      <Box direction="row" justify="between" align="center">
-        <Heading level={4} margin="xsmall">
-          {`Hint: ${message.title}`}
-        </Heading>
-        <Button icon={<Close size="small" />} onClick={onClose} />
-      </Box>
+    <Box
+      width="medium"
+      border={border}
+      direction="row"
+      pad="small"
+      gap="small"
+      round="small"
+      responsive={false}
+    >
+      <ThemeContext.Extend value={accordionTheme}>
+        <Accordion
+          activeIndex={activeIndex}
+          onActive={(newActiveIndex) => setActiveIndex(newActiveIndex)}
+        >
+          <AccordionPanel label={AccordionHeader(message.title)}>
+            <Box>
+              <Paragraph size="small">
+                {message.description}
+              </Paragraph>
+            </Box>
+          </AccordionPanel>
+        </Accordion>
+      </ThemeContext.Extend>
       <Box>
-        <Paragraph size="small">
-          {message.description}
-        </Paragraph>
-      </Box>
-      <Box direction="row" gap="medium" justify="between">
-        <Box>
-          <Button
-            label={<Text size="small">Cancel</Text>}
-            onClick={onCancel}
-          />
-        </Box>
-        <Box>
-          <Button
-            label={<Text size="small">Next</Text>}
-            onClick={onNext}
-            disabled={loading}
-            primary
-          />
-        </Box>
+        <Button icon={<Close />} onClick={onClose} plain />
       </Box>
     </Box>
   );

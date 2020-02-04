@@ -33,19 +33,6 @@ class HintButton extends React.Component {
     });
   }
 
-  onCancel() {
-    const { undoChange } = this.props;
-    undoChange();
-    this.setState({
-      open: false,
-    });
-  }
-
-  onNext() {
-    const { sudoku, hasChanges, retrieveHint } = this.props;
-    retrieveHint({ sudoku, hasChanges });
-  }
-
   render() {
     const { hint } = this.props;
     const { open } = this.state;
@@ -66,13 +53,11 @@ class HintButton extends React.Component {
             responsive={false}
             margin={layerMargin}
             onEsc={() => this.onClose()}
+            onClickOutside={() => this.onClose()}
           >
             {hint.item && (
               <HintModal
                 hint={hint.item}
-                loading={hint.loading}
-                onCancel={() => this.onCancel()}
-                onNext={() => this.onNext()}
                 onClose={() => this.onClose()}
               />
             )}
