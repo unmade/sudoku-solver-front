@@ -4,10 +4,11 @@ import {
   grommet, Box, Header, Grid, Grommet, Button, Text,
 } from 'grommet';
 import { Menu } from 'grommet-icons';
-import Sidebar from './components/Sidebar';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
+import GoogleButton from './containers/GoogleButton';
 import Random from './pages/Random';
+import Sidebar from './components/Sidebar';
 
 
 const headerPad = {
@@ -63,6 +64,7 @@ class App extends React.Component {
         >
           <Header gridArea="header" pad={headerPad}>
             <Button icon={<Menu />} onClick={() => this.toggleSidebar()} />
+            <GoogleButton />
           </Header>
 
           <Sidebar open={isSidebarOpen} onClose={() => this.toggleSidebar()}>

@@ -1,0 +1,81 @@
+import { put, takeEvery } from 'redux-saga/effects';
+import API_BASE_URL from '../api-config';
+
+const SIGNIN_USER = 'SIGNIN_USER';
+export const SIGNIN_USER_REQUEST = 'SIGNIN_USER_REQUEST';
+export const SIGNIN_USER_SUCCESS = 'SIGNIN_USER_SUCCESS';
+export const SIGNIN_USER_FAILURE = 'SIGNIN_USER_FAILURE';
+
+
+function signInUserRequest() {
+  return {
+    type: SIGNIN_USER_REQUEST,
+    payload: null,
+  };
+}
+
+
+function signInUserSuccess({ token }) {
+  return {
+    type: SIGNIN_USER_SUCCESS,
+    payload: {
+      token,
+    },
+  };
+}
+
+
+function signInUserFailure(error) {
+  return {
+    type: SIGNIN_USER_FAILURE,
+    payload: error,
+  };
+}
+
+
+export function signInUser({ code }) {
+  return {
+    type: SIGNIN_USER,
+    payload: {
+      code,
+    },
+  };
+}
+
+
+function* signInUserSaga({ payload }) {
+  const { code } = payload;
+  const url = `${API_BASE_URL}/auth/login/social/jwt/google-oauth2/`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      code,
+      redirect_uri: 'http://localhost:3000',
+    }),
+    mode: 'cors',
+    cache: 'default',
+  };
+
+  yield put(signInUserRequest());
+
+  try {
+    const response = yield fetch(url, options);
+    const data = yield response.json();
+    if (response.ok) {
+      localStorage.setItem('jwtToken', data.token);
+      yield put(signInUserSuccess(data));
+    } else {
+      yield put(signInUserFailure(data));
+    }
+  } catch (e) {
+    yield put(signInUserFailure(e));
+  }
+}
+
+
+export const authSagas = [
+  takeEvery(SIGNIN_USER, signInUserSaga),
+];
