@@ -1,36 +1,35 @@
 import {
-  SIGNIN_USER_REQUEST,
-  SIGNIN_USER_SUCCESS,
-  SIGNIN_USER_FAILURE,
+  RETRIEVE_PROFILE_REQUEST,
+  RETRIEVE_PROFILE_SUCCESS,
+  RETRIEVE_PROFILE_FAILURE,
 } from './actions';
 
 
 const INITIAL_STATE = {
-  token: null,
+  item: null,
   loading: false,
   error: null,
 };
 
 
-const AuthReducer = (state = INITIAL_STATE, action) => {
+const ProfileReducer = (state = INITIAL_STATE, action) => {
   switch (action) {
-    case SIGNIN_USER_REQUEST: {
+    case RETRIEVE_PROFILE_REQUEST: {
       return {
         loading: true,
         ...state,
       };
     }
-    case SIGNIN_USER_SUCCESS: {
-      const { token } = action.payload;
+    case RETRIEVE_PROFILE_SUCCESS: {
       return {
-        token,
+        item: action.payload,
         loading: false,
         ...state,
       };
     }
-    case SIGNIN_USER_FAILURE: {
+    case RETRIEVE_PROFILE_FAILURE: {
       return {
-        token: null,
+        item: null,
         loading: false,
         error: null,
       };
@@ -41,4 +40,4 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
 };
 
 
-export default AuthReducer;
+export default ProfileReducer;

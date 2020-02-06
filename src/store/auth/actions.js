@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import API_BASE_URL from '../api-config';
+import { retrieveProfile } from '../profiles/actions';
 
 const SIGNIN_USER = 'SIGNIN_USER';
 export const SIGNIN_USER_REQUEST = 'SIGNIN_USER_REQUEST';
@@ -45,7 +46,7 @@ export function signInUser({ code }) {
 
 function* signInUserSaga({ payload }) {
   const { code } = payload;
-  const url = `${API_BASE_URL}/auth/login/social/jwt/google-oauth2/`;
+  const url = `${API_BASE_URL}/auth/google-oauth2/tokens`;
   const options = {
     method: 'POST',
     headers: {
@@ -64,9 +65,10 @@ function* signInUserSaga({ payload }) {
   try {
     const response = yield fetch(url, options);
     const data = yield response.json();
+    const { token } = data;
     if (response.ok) {
-      localStorage.setItem('jwtToken', data.token);
       yield put(signInUserSuccess(data));
+      yield put(retrieveProfile({ token }));
     } else {
       yield put(signInUserFailure(data));
     }
