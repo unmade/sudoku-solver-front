@@ -13,19 +13,19 @@ const INITIAL_STATE = {
 
 
 const AuthReducer = (state = INITIAL_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case SIGNIN_USER_REQUEST: {
       return {
-        loading: true,
         ...state,
+        loading: true,
       };
     }
     case SIGNIN_USER_SUCCESS: {
       const { token } = action.payload;
       return {
+        ...state,
         token,
         loading: false,
-        ...state,
       };
     }
     case SIGNIN_USER_FAILURE: {

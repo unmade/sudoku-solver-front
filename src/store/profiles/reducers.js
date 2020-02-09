@@ -13,18 +13,18 @@ const INITIAL_STATE = {
 
 
 const ProfileReducer = (state = INITIAL_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case RETRIEVE_PROFILE_REQUEST: {
       return {
-        loading: true,
         ...state,
+        loading: true,
       };
     }
     case RETRIEVE_PROFILE_SUCCESS: {
       return {
+        ...state,
         item: action.payload,
         loading: false,
-        ...state,
       };
     }
     case RETRIEVE_PROFILE_FAILURE: {
