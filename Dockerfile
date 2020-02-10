@@ -7,10 +7,6 @@ WORKDIR /usr/src/app
 
 ARG api_base_url
 ENV REACT_APP_API_BASE_URL $api_base_url
-
-ARG google_oauth2_key
-ENV REACT_APP_GOOGLE_OAUTH2_KEY $google_oauth2_key
-
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 COPY package.json /usr/src/app/package.json

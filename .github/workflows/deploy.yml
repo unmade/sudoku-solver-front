@@ -20,12 +20,8 @@ jobs:
       env:
         TAG: ${{ steps.tag_name.outputs.TAG }}
         API_BASE_URL: ${{ secrets.API_BASE_URL }}
-        GOOGLE_OAUTH2_KEY: ${{ secrets.GOOGLE_OAUTH2_KEY }}
       run: |
-        docker build . \
-            -t fdooch/sudoku-solver-front:${TAG} \
-            --build-arg api_base_url=${API_BASE_URL}
-            --build-arg google_oauth2_key=${GOOGLE_OAUTH2_KEY}
+        docker build . -t fdooch/sudoku-solver-front:${TAG} --build-arg api_base_url=${API_BASE_URL}
 
     - name: Log in to the Heroku registry
       env:
