@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
+import { getTokens } from '../store/auth/selectors';
 import { retrieveProfile } from '../store/profiles/actions';
 import AvatarOrSignIn from '../components/AvatarOrSignIn';
 
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  tokens: state.auth.tokens,
+  tokens: getTokens(state),
 });
 
 

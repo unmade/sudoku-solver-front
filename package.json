@@ -5,6 +5,7 @@
   "dependencies": {
     "grommet": "^2.8.1",
     "grommet-icons": "^4.4.0",
+    "jwt-decode": "^2.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-google-login": "^5.1.0",

@@ -1,11 +1,13 @@
 import { INITIAL_STATE } from './reducers';
+import { getTokens } from './selectors';
 
 const KEY = 'state.auth.tokens';
 
 
 export function saveAuthState(state) {
-  if (state.auth.tokens !== localStorage.getItem(KEY)) {
-    localStorage.setItem(KEY, JSON.stringify((state.auth || {}).tokens));
+  const tokens = getTokens(state);
+  if (tokens !== localStorage.getItem(KEY)) {
+    localStorage.setItem(KEY, JSON.stringify(tokens));
   }
 }
 

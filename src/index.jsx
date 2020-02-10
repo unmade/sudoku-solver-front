@@ -1,33 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import createSagaMiddleware from 'redux-saga';
 import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
+import store from './store/store';
 import App from './App';
-import reducers from './store/reducers';
-import rootSaga from './store/sagas';
 import './index.css';
-import { saveAuthState, loadAuthState } from './store/auth/storage';
 
-
-const sagaMiddleware = createSagaMiddleware();
-
-
-const store = (() => createStore(
-  reducers,
-  { ...loadAuthState() },
-  applyMiddleware(sagaMiddleware),
-))();
-
-
-store.subscribe(() => {
-  saveAuthState(store.getState());
-});
-
-
-sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
