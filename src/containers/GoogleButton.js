@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { signInUser } from '../store/auth/actions';
+import { signIn } from '../store/auth/actions';
 import GoogleButton from '../components/GoogleButton';
 
 
 const mapDispatchToProps = (dispatch) => ({
-  onSuccess: (response) => dispatch(signInUser(response)),
+  onSuccess: (response) => dispatch(signIn(response)),
   onFailure: () => {},
 });
 

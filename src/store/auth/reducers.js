@@ -1,7 +1,7 @@
 import {
-  SIGNIN_USER_REQUEST,
-  SIGNIN_USER_SUCCESS,
-  SIGNIN_USER_FAILURE,
+  SIGN_IN_REQUEST,
+  SIGN_IN_SUCCESS,
+  SIGN_IN_FAILURE,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILURE,
@@ -17,21 +17,21 @@ export const INITIAL_STATE = {
 
 const AuthReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SIGNIN_USER_REQUEST: {
+    case SIGN_IN_REQUEST: {
       return {
         ...state,
         loading: true,
         error: null,
       };
     }
-    case SIGNIN_USER_SUCCESS: {
+    case SIGN_IN_SUCCESS: {
       return {
         ...state,
         tokens: action.payload,
         loading: false,
       };
     }
-    case SIGNIN_USER_FAILURE: {
+    case SIGN_IN_FAILURE: {
       return {
         tokens: null,
         loading: false,

@@ -11,10 +11,10 @@ import API_BASE_URL from '../api-config';
 import { retrieveProfile } from '../profiles/actions';
 import { getTokens } from './selectors';
 
-const SIGNIN_USER = 'SIGNIN_USER';
-export const SIGNIN_USER_REQUEST = 'SIGNIN_USER_REQUEST';
-export const SIGNIN_USER_SUCCESS = 'SIGNIN_USER_SUCCESS';
-export const SIGNIN_USER_FAILURE = 'SIGNIN_USER_FAILURE';
+const SIGN_IN = 'SIGN_IN';
+export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
 
 const REFRESH_TOKEN = 'REFRESH_TOKEN';
 export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
@@ -22,17 +22,17 @@ export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 export const REFRESH_TOKEN_FAILURE = 'REFRESH_TOKEN_FAILURE';
 
 
-function signInUserRequest() {
+function signInRequest() {
   return {
-    type: SIGNIN_USER_REQUEST,
+    type: SIGN_IN_REQUEST,
     payload: null,
   };
 }
 
 
-function signInUserSuccess({ token, refresh }) {
+function signInSuccess({ token, refresh }) {
   return {
-    type: SIGNIN_USER_SUCCESS,
+    type: SIGN_IN_SUCCESS,
     payload: {
       token,
       refresh,
@@ -41,17 +41,17 @@ function signInUserSuccess({ token, refresh }) {
 }
 
 
-function signInUserFailure(error) {
+function signInFailure(error) {
   return {
-    type: SIGNIN_USER_FAILURE,
+    type: SIGN_IN_FAILURE,
     payload: error,
   };
 }
 
 
-export function signInUser({ code }) {
+export function signIn({ code }) {
   return {
-    type: SIGNIN_USER,
+    type: SIGN_IN,
     payload: {
       code,
     },
@@ -75,20 +75,20 @@ function* signInUserSaga({ payload }) {
     cache: 'default',
   };
 
-  yield put(signInUserRequest());
+  yield put(signInRequest());
 
   try {
     const response = yield fetch(url, options);
     const data = yield response.json();
     const { token } = data;
     if (response.ok) {
-      yield put(signInUserSuccess(data));
+      yield put(signInSuccess(data));
       yield put(retrieveProfile({ token }));
     } else {
-      yield put(signInUserFailure(data));
+      yield put(signInFailure(data));
     }
   } catch (e) {
-    yield put(signInUserFailure(e));
+    yield put(signInFailure(e));
   }
 }
 
@@ -165,7 +165,7 @@ function* refreshTokenWatcher() {
 
   while (true) {
     if (!tokens) {
-      const { payload } = yield take(SIGNIN_USER_SUCCESS);
+      const { payload } = yield take(SIGN_IN_SUCCESS);
       if (payload) {
         tokens = payload;
       }
@@ -202,5 +202,5 @@ function* refreshTokenWatcher() {
 export const authSagas = [
   refreshTokenWatcher(),
   takeEvery(REFRESH_TOKEN, refreshTokenSaga),
-  takeEvery(SIGNIN_USER, signInUserSaga),
+  takeEvery(SIGN_IN, signInUserSaga),
 ];
