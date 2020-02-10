@@ -75,7 +75,7 @@ function* signInSaga({ payload }) {
     },
     body: JSON.stringify({
       code,
-      redirect_uri: 'http://localhost:3000',
+      redirect_uri: window.location.origin,
     }),
     mode: 'cors',
     cache: 'default',
