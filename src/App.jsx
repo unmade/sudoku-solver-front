@@ -1,19 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import {
-  grommet, Box, Header, Grid, Grommet, Button, Text,
+  grommet, Box, Grid, Grommet, Button, Text,
 } from 'grommet';
-import { Menu } from 'grommet-icons';
-import Sidebar from './components/Sidebar';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
+import Header from './components/Header';
 import Random from './pages/Random';
-
-
-const headerPad = {
-  horizontal: 'medium',
-  vertical: 'small',
-};
+import Sidebar from './components/Sidebar';
 
 
 const pages = [
@@ -61,9 +55,7 @@ class App extends React.Component {
             { name: 'main', start: [1, 1], end: [1, 1] },
           ]}
         >
-          <Header gridArea="header" pad={headerPad}>
-            <Button icon={<Menu />} onClick={() => this.toggleSidebar()} />
-          </Header>
+          <Header onMenuClick={() => this.toggleSidebar()} />
 
           <Sidebar open={isSidebarOpen} onClose={() => this.toggleSidebar()}>
             {pages.map((item) => (
@@ -86,6 +78,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default App;
