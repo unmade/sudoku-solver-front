@@ -13,9 +13,9 @@ class AvatarOrSignIn extends React.Component {
   }
 
   render() {
-    const { profile, tokens } = this.props;
+    const { profile, tokens, onSignOut } = this.props;
     if (profile && !profile.loading && profile.item) {
-      return <AvatarButton profile={profile.item} />;
+      return <AvatarButton profile={profile.item} onSignOut={onSignOut} />;
     }
     if (!tokens && profile && !profile.loading && profile.item === null) {
       return <GoogleButton />;

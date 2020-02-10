@@ -2,6 +2,7 @@ import {
   SIGN_IN_REQUEST,
   SIGN_IN_SUCCESS,
   SIGN_IN_FAILURE,
+  SIGN_OUT_SUCCESS,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
   REFRESH_TOKEN_FAILURE,
@@ -36,6 +37,14 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
         tokens: null,
         loading: false,
         error: action.payload,
+      };
+    }
+    case SIGN_OUT_SUCCESS: {
+      return {
+        ...state,
+        tokens: null,
+        loading: false,
+        error: null,
       };
     }
     case REFRESH_TOKEN_REQUEST: {

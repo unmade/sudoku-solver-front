@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  Box, Button, DropButton, Image,
-} from 'grommet';
-import { Logout } from 'grommet-icons';
+import { Box, DropButton, Image } from 'grommet';
+import UserMenu from './UserMenu';
 
 
 const dropProps = {
@@ -15,16 +13,9 @@ const dropProps = {
 };
 
 
-const Content = () => (
-  <Box pad="small" width="small">
-    <Button icon={<Logout />} label="Sign Out" plain />
-  </Box>
-);
-
-
-const AvatarButton = ({ profile }) => (
+const AvatarButton = ({ profile, onSignOut }) => (
   <DropButton
-    dropContent={<Content />}
+    dropContent={<UserMenu onSignOut={onSignOut} />}
     dropProps={dropProps}
   >
     <Box width="xxsmall" height="xxsmall" round="full" overflow="hidden">

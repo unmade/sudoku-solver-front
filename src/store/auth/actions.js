@@ -16,6 +16,12 @@ export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
 
+const SIGN_OUT = 'SIGN_OUT';
+export const SIGN_OUT_REQUEST = 'SIGN_OUT_REQUEST';
+export const SIGN_OUT_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_OUT_FAILURE = 'SIGN_IN_FAILURE';
+
+
 const REFRESH_TOKEN = 'REFRESH_TOKEN';
 export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
 export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
@@ -59,7 +65,7 @@ export function signIn({ code }) {
 }
 
 
-function* signInUserSaga({ payload }) {
+function* signInSaga({ payload }) {
   const { code } = payload;
   const url = `${API_BASE_URL}/auth/google-oauth2/tokens`;
   const options = {
@@ -89,6 +95,48 @@ function* signInUserSaga({ payload }) {
     }
   } catch (e) {
     yield put(signInFailure(e));
+  }
+}
+
+
+function signOutRequest() {
+  return {
+    type: SIGN_OUT_REQUEST,
+    payload: null,
+  };
+}
+
+
+function signOutSuccess() {
+  return {
+    type: SIGN_OUT_SUCCESS,
+    payload: null,
+  };
+}
+
+
+function signOutFailure(error) {
+  return {
+    type: SIGN_OUT_FAILURE,
+    payload: error,
+  };
+}
+
+
+export function signOut() {
+  return {
+    type: SIGN_OUT,
+    payload: null,
+  };
+}
+
+
+function* signOutSaga() {
+  yield put(signOutRequest());
+  try {
+    yield put(signOutSuccess());
+  } catch (e) {
+    yield put(signOutFailure(e));
   }
 }
 
@@ -202,5 +250,6 @@ function* refreshTokenWatcher() {
 export const authSagas = [
   refreshTokenWatcher(),
   takeEvery(REFRESH_TOKEN, refreshTokenSaga),
-  takeEvery(SIGN_IN, signInUserSaga),
+  takeEvery(SIGN_IN, signInSaga),
+  takeEvery(SIGN_OUT, signOutSaga),
 ];

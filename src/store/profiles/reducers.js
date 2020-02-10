@@ -3,6 +3,9 @@ import {
   RETRIEVE_PROFILE_SUCCESS,
   RETRIEVE_PROFILE_FAILURE,
 } from './actions';
+import {
+  SIGN_OUT_SUCCESS,
+} from '../auth/actions';
 
 
 const INITIAL_STATE = {
@@ -30,9 +33,18 @@ const ProfileReducer = (state = INITIAL_STATE, action) => {
     }
     case RETRIEVE_PROFILE_FAILURE: {
       return {
+        ...state,
         item: null,
         loading: false,
         error: action.payload,
+      };
+    }
+    case SIGN_OUT_SUCCESS: {
+      return {
+        ...state,
+        item: null,
+        loading: false,
+        error: null,
       };
     }
     default:

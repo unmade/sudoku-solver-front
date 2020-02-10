@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { getTokens } from '../store/auth/selectors';
 import { retrieveProfile } from '../store/profiles/actions';
 import AvatarOrSignIn from '../components/AvatarOrSignIn';
+import { signOut } from '../store/auth/actions';
 
 
 const mapStateToProps = (state) => ({
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   retrieveProfile: ({ token }) => dispatch(retrieveProfile({ token })),
+  onSignOut: () => dispatch(signOut()),
 });
 
 
