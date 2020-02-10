@@ -6,7 +6,7 @@ import GoogleLogin from 'react-google-login';
 const GOOGLE_OAUTH2_KEY = process.env.REACT_APP_GOOGLE_OAUTH2_KEY;
 
 
-const GoogleSignIn = ({ onSuccess, onFailure }) => (
+const GoogleButton = ({ onSuccess, onFailure }) => (
   <GoogleLogin
     clientId={GOOGLE_OAUTH2_KEY}
     onSuccess={onSuccess}
@@ -24,4 +24,4 @@ const GoogleSignIn = ({ onSuccess, onFailure }) => (
   />
 );
 
-export default GoogleSignIn;
+export default GoogleButton;

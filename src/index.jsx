@@ -9,14 +9,23 @@ import App from './App';
 import reducers from './store/reducers';
 import rootSaga from './store/sagas';
 import './index.css';
+import { saveAuthState, loadAuthState } from './store/auth/storage';
 
 
 const sagaMiddleware = createSagaMiddleware();
 
+
 const store = (() => createStore(
   reducers,
+  { ...loadAuthState() },
   applyMiddleware(sagaMiddleware),
 ))();
+
+
+store.subscribe(() => {
+  saveAuthState(store.getState());
+});
+
 
 sagaMiddleware.run(rootSaga);
 

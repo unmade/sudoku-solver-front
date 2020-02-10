@@ -5,8 +5,8 @@ import {
 } from './actions';
 
 
-const INITIAL_STATE = {
-  token: null,
+export const INITIAL_STATE = {
+  tokens: null,
   loading: false,
   error: null,
 };
@@ -21,18 +21,17 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
       };
     }
     case SIGNIN_USER_SUCCESS: {
-      const { token } = action.payload;
       return {
         ...state,
-        token,
+        tokens: action.payload,
         loading: false,
       };
     }
     case SIGNIN_USER_FAILURE: {
       return {
-        token: null,
+        tokens: null,
         loading: false,
-        error: null,
+        error: action.payload,
       };
     }
     default:

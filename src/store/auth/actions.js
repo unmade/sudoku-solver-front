@@ -16,11 +16,12 @@ function signInUserRequest() {
 }
 
 
-function signInUserSuccess({ token }) {
+function signInUserSuccess({ token, refresh }) {
   return {
     type: SIGNIN_USER_SUCCESS,
     payload: {
       token,
+      refresh,
     },
   };
 }

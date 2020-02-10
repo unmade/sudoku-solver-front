@@ -18,6 +18,7 @@ const ProfileReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     }
     case RETRIEVE_PROFILE_SUCCESS: {
@@ -31,7 +32,7 @@ const ProfileReducer = (state = INITIAL_STATE, action) => {
       return {
         item: null,
         loading: false,
-        error: null,
+        error: action.payload,
       };
     }
     default:

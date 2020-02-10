@@ -1,8 +1,7 @@
 import React from 'react';
 import { Button, Header as GrommetHeader } from 'grommet';
 import { Menu } from 'grommet-icons';
-import AvatarButton from './AvatarButton';
-import GoogleButton from './GoogleButton';
+import AvatarOrSignIn from '../containers/AvatarOrSignIn';
 
 
 const headerPad = {
@@ -11,14 +10,10 @@ const headerPad = {
 };
 
 
-const Header = ({ profile, onSignInSuccess, onMenuClick }) => (
+const Header = ({ onMenuClick }) => (
   <GrommetHeader gridArea="header" pad={headerPad}>
     <Button icon={<Menu />} onClick={onMenuClick} />
-    {(profile) ? (
-      <AvatarButton profile={profile} />
-    ) : (
-      <GoogleButton onSuccess={onSignInSuccess} />
-    )}
+    <AvatarOrSignIn />
   </GrommetHeader>
 );
 

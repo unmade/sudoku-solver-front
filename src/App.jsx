@@ -5,9 +5,9 @@ import {
 } from 'grommet';
 import BlankGrid from './pages/BlankGrid';
 import Daily from './pages/Daily';
+import Header from './components/Header';
 import Random from './pages/Random';
 import Sidebar from './components/Sidebar';
-import Header from './containers/Header';
 
 
 const pages = [
@@ -78,6 +78,5 @@ class App extends React.Component {
     );
   }
 }
-
 
 export default App;

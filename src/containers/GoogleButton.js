@@ -5,7 +5,7 @@ import GoogleButton from '../components/GoogleButton';
 
 const mapDispatchToProps = (dispatch) => ({
   onSuccess: (response) => dispatch(signInUser(response)),
-  onFailue: () => {},
+  onFailure: () => {},
 });
 
 
